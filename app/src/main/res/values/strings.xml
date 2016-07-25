@@ -2,4 +2,7 @@
     <string name="app_name">TouchUIExample</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+
+    <string name="graph_month">Month</string>
+    <string name="graph_7day">Week</string>
 </resources>
