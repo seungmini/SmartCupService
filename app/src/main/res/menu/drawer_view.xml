@@ -9,7 +9,7 @@
             android:title="Second" />
         <item
             android:id="@+id/nav_third_fragment"
-            android:title="Third" />
+            android:title="Feed Back" />
     </group>
 </menu>
 

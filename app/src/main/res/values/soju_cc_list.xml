@@ -1,0 +1,9 @@
+<resources>
+    <string-array name="soju_cc">
+        <item>50cc</item>
+        <item>100cc</item>
+        <item>150cc</item>
+        <item>200cc</item>
+        <item>250cc</item>
+    </string-array>
+</resources>

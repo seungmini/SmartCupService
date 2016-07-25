@@ -1,14 +1,17 @@
 package com.example.lageder.touchuiexample;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -88,7 +91,18 @@ public class MainActivity extends AppCompatActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        //selectDrawerItem(menuItem);
+                        int id = menuItem.getItemId();
+
+                        if (id == R.id.nav_first_fragment) {
+
+                        } else if (id == R.id.nav_second_fragment) {
+
+                        } else if (id == R.id.nav_third_fragment) {
+                            Intent feedback_intent = new Intent(getApplicationContext(), FeedBackActivity.class);
+                            startActivity(feedback_intent);
+                        }
+                        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                        drawer.closeDrawer(GravityCompat.START);
                         return true;
                     }
                 });

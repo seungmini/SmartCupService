@@ -15,7 +15,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GraphPopupActivity"></activity>
+        <activity
+            android:name=".GraphPopupActivity"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".FeedBackActivity"></activity>
     </application>
 
 </manifest>

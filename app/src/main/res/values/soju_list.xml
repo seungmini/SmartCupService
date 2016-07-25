@@ -1,0 +1,9 @@
+<resources>
+    <string-array name="soju">
+        <item>C1</item>
+        <item>좋은데이</item>
+        <item>순하리</item>
+        <item>처음처럼</item>
+        <item>한라산</item>
+    </string-array>
+</resources>
