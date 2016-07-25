@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:circular="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="You Are In Tab 1"
-        android:id="@+id/textView" />
+    <com.lylc.widget.circularprogressbar.CircularProgressBar
+        android:id="@+id/circularprogressbar1"
+        style="@style/Widget.ProgressBar.CircularProgressBar"
+        android:layout_width="240dip"
+        android:layout_height="240dip"
+        android:layout_marginTop="10dip"
+        circular:subtitle="subtitle"
+        circular:title="Title"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="www.androstock.com"
+        android:text=""
         android:id="@+id/buttonTab1"/>
 
 </LinearLayout>
