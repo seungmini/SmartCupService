@@ -33,7 +33,6 @@ public class Tab1 extends Fragment {
 
         activity = getActivity();
         c1 = (CircularProgressBar) v.findViewById(R.id.circularprogressbar1);
-        c1.setSubTitle("작작 먹어라");
         current_value = 95;
         c1.animateProgressTo(0, current_value, new CircularProgressBar.ProgressAnimationListener() {
             @Override
@@ -42,7 +41,7 @@ public class Tab1 extends Fragment {
 
             @Override
             public void onAnimationFinish() {
-                c1.setTitle("돼지네 임마");
+                c1.setTitle("Concentration");
             }
 
             @Override
