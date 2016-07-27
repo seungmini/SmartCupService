@@ -10,7 +10,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     CharSequence Titles[]; // This will Store the Titles of the Tabs which are Going to be passed when ViewPagerAdapter is created
     int NumbOfTabs; // Store the number of tabs, this will also be passed when the ViewPagerAdapter is created
-
+    static GraphActivity graphActivity;
 
     // Build a Constructor and assign the passed Values to appropriate values in the class
     public ViewPagerAdapter(FragmentManager fm, CharSequence mTitles[], int mNumbOfTabsumb) {
@@ -19,6 +19,10 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         this.Titles = mTitles;
         this.NumbOfTabs = mNumbOfTabsumb;
 
+    }
+
+    public GraphActivity getGraphActivity() {
+        return graphActivity;
     }
 
     //This method return the fragment for the every position in the View Pager
@@ -30,7 +34,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             return tab1;
         } else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
         {
-            GraphActivity graphActivity = new GraphActivity();
+            graphActivity = new GraphActivity();
             return graphActivity;
         }
     }

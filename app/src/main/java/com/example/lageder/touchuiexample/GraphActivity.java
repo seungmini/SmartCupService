@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 public class GraphActivity extends Fragment {
     Activity activity;
-    private BarChart chart;
+    private static BarChart chart;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -131,7 +131,6 @@ public class GraphActivity extends Fragment {
         chart.animateY(2000);
     }
     public void makeMonthGraph(){
-
         BarData data = new BarData(getXLabel_month(), getDataSet_month());
         chart.setData(data);
         chart.setTouchEnabled(true);

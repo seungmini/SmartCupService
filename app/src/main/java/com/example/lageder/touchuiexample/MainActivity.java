@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -14,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     ViewPager pager;
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
+
     CharSequence Titles[]={"STATUS","GRAPH"};
     int numOfTabs = 2;
 
@@ -40,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         backPressCloseHandler = new BackPressCloseHandler(this);
-
         // Creating Tool bar and setting it as the Toolbar for activity
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
@@ -121,4 +123,32 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.menu_1week:
+                adapter.getGraphActivity().makeWeekGraph();
+                Log.e("Graph","Button1 listen");
+                break;
+
+            case R.id.menu_4week:
+                adapter.getGraphActivity().makeMonthGraph();
+                Log.e("Graph","Button2 listen");
+                break;
+
+            case R.id.menu_24week:
+                //adapter.getGraphActivity().makeMonthGraph();
+                Log.e("Graph","Button3 listen");
+                break;
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

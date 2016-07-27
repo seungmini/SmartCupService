@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_1week"
+        android:orderInCategory="100"
+        android:title="1 week"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_4week"
+        android:orderInCategory="100"
+        android:title="1 month"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_24week"
+        android:orderInCategory="100"
+        android:title="6 month"
+        app:showAsAction="never" />
+
+</menu>
