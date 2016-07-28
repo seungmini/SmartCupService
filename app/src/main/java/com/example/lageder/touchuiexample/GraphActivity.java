@@ -1,21 +1,14 @@
 package com.example.lageder.touchuiexample;
 
-/**
- * Created by Lageder on 2016-07-23.
- */
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
-
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -25,8 +18,12 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-
 import java.util.ArrayList;
+
+
+/**
+ * Created by LeeSeungMin
+ */
 
 public class GraphActivity extends Fragment {
     Activity activity;

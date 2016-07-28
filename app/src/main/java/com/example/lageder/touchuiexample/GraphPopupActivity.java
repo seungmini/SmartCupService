@@ -18,6 +18,10 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 
 
+/**
+ * Created by LeeSeungMin
+ */
+
 public class GraphPopupActivity extends Activity {
     private BarChart chart_popup;
 
@@ -36,8 +40,8 @@ public class GraphPopupActivity extends Activity {
 
         //크기 조절
         Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        int width = (int) (display.getWidth() * 0.8); //Display 사이즈의 70%
-        int height = (int) (display.getHeight() * 0.5);  //Display 사이즈의 90%
+        int width = (int) (display.getWidth() * 0.8); //Display 사이즈의 80%
+        int height = (int) (display.getHeight() * 0.5);  //Display 사이즈의 50%
         getWindow().getAttributes().width = width;
         getWindow().getAttributes().height = height;
 

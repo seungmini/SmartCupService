@@ -10,19 +10,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="소주"
-        android:id="@+id/name_textview"/>
+        android:text=""
+        android:id="@+id/feedback_text"/>
     <Spinner
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:entries="@array/soju"
         android:id="@+id/drink_spinner"/>
+
     <Spinner
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:entries="@array/soju_cc"
         android:id="@+id/cc_spinner"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="잔"/>
+
 
 </LinearLayout>

@@ -1,0 +1,8 @@
+<resources>
+    <string-array name="macju">
+        <item>Cass</item>
+        <item>Hite</item>
+        <item>MAX</item>
+        <item>OB</item>
+    </string-array>
+</resources>
