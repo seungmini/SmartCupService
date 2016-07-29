@@ -26,19 +26,18 @@ import java.util.ArrayList;
  */
 
 public class GraphActivity extends Fragment {
-    Activity activity;
+    private Activity activity;
     private static BarChart chart;
-
+    private View vi;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_graph, container, false);
-
+        vi = inflater.inflate(R.layout.activity_graph, container, false);
         activity = getActivity();
+        chart = (BarChart)vi.findViewById(R.id.chart);
 
-        chart = (BarChart)v.findViewById(R.id.chart);
         makeWeekGraph();
 
-        return v;
+        return vi;
     }
 
 /*
@@ -166,9 +165,7 @@ public class GraphActivity extends Fragment {
                     case 3:
                         Log.d("Tag","Select Forth Bar");
                         break;
-
                 }
-
             }
 
             @Override
@@ -179,5 +176,4 @@ public class GraphActivity extends Fragment {
         chart.setDescription("description");
         chart.animateY(2000);
     }
-
 }

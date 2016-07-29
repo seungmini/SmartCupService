@@ -1,5 +1,5 @@
 <resources>
-    <string-array name="soju">
+    <string-array name="soju_list">
         <item>C1</item>
         <item>좋은데이</item>
         <item>순하리</item>

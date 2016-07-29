@@ -26,38 +26,35 @@ public class FeedBackActivity extends AppCompatActivity {
 
     private ListView mainListView;
     private CustomAdapter listAdapter;
-
+    private TextView feedback_title;
+    private Display display;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed_back);
 
-
         mainListView = (ListView) findViewById(R.id.drink_listview);
         listAdapter = new CustomAdapter(this);
         mainListView.setAdapter(listAdapter);
-        Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+
+        feedback_title = (TextView) findViewById(R.id.toolbar_title);
+        feedback_title.setText("Feed Back");
+
+        display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         int width = (int) (display.getWidth() * 0.7);
         int height = (int) (display.getHeight() * 0.8);
         getWindow().getAttributes().width = width;
         getWindow().getAttributes().height = height;
 
-        TextView feedback_title = (TextView) findViewById(R.id.toolbar_title);
-        feedback_title.setText("Feed Back");
-
         ImageButton add_button = (ImageButton) findViewById(R.id.add_button);
         add_button.setOnClickListener(new ImageButton.OnClickListener() {
             public void onClick(View v) {
                 showDialog();
-               /* listAdapter.add();
-                listAdapter.notifyDataSetChanged();*/
             }
-
         });
     }
 
     public void showDialog() {
-
         final CharSequence[] drink_type = {"소주", "맥주", "막걸리"};
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 

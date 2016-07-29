@@ -1,5 +1,5 @@
 <resources>
-    <string-array name="soju_cc">
+    <string-array name="number_of_drink">
         <item>1</item>
         <item>2</item>
         <item>3</item>

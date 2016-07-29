@@ -3,11 +3,9 @@ package com.example.lageder.touchuiexample;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.WindowManager;
-
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
