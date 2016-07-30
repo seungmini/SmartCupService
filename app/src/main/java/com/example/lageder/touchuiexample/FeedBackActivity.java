@@ -12,6 +12,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,6 +29,8 @@ public class FeedBackActivity extends AppCompatActivity {
     private CustomAdapter listAdapter;
     private TextView feedback_title;
     private Display display;
+    private Button button_ok, button_cancel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +40,44 @@ public class FeedBackActivity extends AppCompatActivity {
         listAdapter = new CustomAdapter(this);
         mainListView.setAdapter(listAdapter);
 
+        button_ok = (Button)findViewById(R.id.button_ok);
+        button_ok.setOnClickListener(new Button.OnClickListener(){
+            public void onClick(View v){
+                for(int i = 0 ; i < listAdapter.getCount(); i++){
+                    Log.e("술"," " + listAdapter.listview_data.get(i).drink_type);
+                    int drink_type = listAdapter.listview_data.get(i).drink_type_int;
+                    if(drink_type == 0){
+                        String arr[] = getResources().getStringArray(R.array.soju_list);
+                        Log.e("타입"," " + arr[listAdapter.getDrinkName(i)]);
+                    }
+                    else if(drink_type == 1){
+                        String arr[] = getResources().getStringArray(R.array.macju_list);
+                        Log.e("타입"," " + arr[listAdapter.getDrinkName(i)]);
+                    }
+                    else {
+                        String arr[] = getResources().getStringArray(R.array.macguli_list);
+                        Log.e("타입"," " + arr[listAdapter.getDrinkName(i)]);
+                    }
+
+                    String arr1[] = getResources().getStringArray(R.array.number_of_drink);
+                    Log.e("량"," " + arr1[listAdapter.getDrinkNumber(i)]);
+                }
+
+            }
+        });
+        button_cancel = (Button)findViewById(R.id.button_cancel);
+        button_cancel.setOnClickListener(new Button.OnClickListener(){
+            public void onClick(View v){
+                Log.e("갯수"," " + listAdapter.getCount());
+
+                //finish();
+            }
+        });
+
+
         feedback_title = (TextView) findViewById(R.id.toolbar_title);
         feedback_title.setText("Feed Back");
+
 
         display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         int width = (int) (display.getWidth() * 0.7);

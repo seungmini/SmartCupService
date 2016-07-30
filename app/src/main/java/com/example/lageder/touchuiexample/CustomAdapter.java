@@ -22,16 +22,27 @@ import java.util.Map;
 
 public class CustomAdapter extends BaseAdapter {
 
-    private ArrayList<ListData> listview_data = new ArrayList<ListData>();
+    public ArrayList<ListData> listview_data = new ArrayList<ListData>();
     private LayoutInflater inflater;
-    private Map<Integer, Integer> drink_name_hashmap = new HashMap<Integer, Integer>();
-    private Map<Integer, Integer> drink_number_hashmap = new HashMap<Integer, Integer>();
+    public Map<Integer, Integer> drink_name_hashmap = new HashMap<Integer, Integer>();
+    public Map<Integer, Integer> drink_number_hashmap = new HashMap<Integer, Integer>();
 
     // 생성자
     public CustomAdapter(Activity input){
        inflater = (LayoutInflater) input.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
-
+    public int getDrinkName(int position){
+        if(drink_name_hashmap.get(position) == null){
+            return 0;
+        }
+        return drink_name_hashmap.get(position);
+    }
+    public int getDrinkNumber(int position){
+        if(drink_number_hashmap.get(position) == null){
+            return 0;
+        }
+        return drink_number_hashmap.get(position);
+    }
     // 현재 아이템의 수를 리턴
     @Override
     public int getCount(){
@@ -58,7 +69,6 @@ public class CustomAdapter extends BaseAdapter {
         final Context context = parent.getContext();
         View vi = convertView;
         CustomHolder holder = null;
-
 
 
         // 리스트가 길어지면서 현재 화면에 보이지 않는 아이템은 converView가 null인 상태로 들어 옴
