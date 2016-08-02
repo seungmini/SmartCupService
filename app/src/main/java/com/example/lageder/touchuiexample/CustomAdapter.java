@@ -164,6 +164,15 @@ public class CustomAdapter extends BaseAdapter {
 
     // 외부에서 아이템 삭제 요청 시 사용
     public void remove(int _position) {
+
+        for(int i = _position ; i < drink_number_hashmap.size()-1;i++){
+            drink_name_hashmap.put(i, drink_name_hashmap.get(i+1));
+            drink_number_hashmap.put(i, drink_number_hashmap.get(i+1));
+        }
+
+        drink_number_hashmap.put(drink_number_hashmap.size()-1,0);
+        drink_name_hashmap.put(drink_number_hashmap.size()-1,0);
+
         listview_data.remove(_position);
     }
 

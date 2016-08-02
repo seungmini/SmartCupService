@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         // Setup drawer view
         setupDrawerContent(nvDrawer);
 
+
         // Creating the viewPagerAdapter and passing fragment manager, titles for the tabs and number of tabs
         adapter = new ViewPagerAdapter(getSupportFragmentManager(),Titles,numOfTabs);
 
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         tabs.setViewPager(pager);
+
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.lageder.touchuiexample;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,14 +25,15 @@ import android.widget.Toast;
  */
 
 
-public class FeedBackActivity extends AppCompatActivity {
+public class FeedBackActivity extends Activity {
 
     private ListView mainListView;
     private CustomAdapter listAdapter;
     private TextView feedback_title;
     private Display display;
     private Button button_ok, button_cancel;
-
+    SeekBar seekbar_hangover;
+    TextView textview_hangover;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,31 +43,7 @@ public class FeedBackActivity extends AppCompatActivity {
         listAdapter = new CustomAdapter(this);
         mainListView.setAdapter(listAdapter);
 
-        button_ok = (Button)findViewById(R.id.button_ok);
-        button_ok.setOnClickListener(new Button.OnClickListener(){
-            public void onClick(View v){
-                for(int i = 0 ; i < listAdapter.getCount(); i++){
-                    Log.e("술"," " + listAdapter.listview_data.get(i).drink_type);
-                    int drink_type = listAdapter.listview_data.get(i).drink_type_int;
-                    if(drink_type == 0){
-                        String arr[] = getResources().getStringArray(R.array.soju_list);
-                        Log.e("타입"," " + arr[listAdapter.getDrinkName(i)]);
-                    }
-                    else if(drink_type == 1){
-                        String arr[] = getResources().getStringArray(R.array.macju_list);
-                        Log.e("타입"," " + arr[listAdapter.getDrinkName(i)]);
-                    }
-                    else {
-                        String arr[] = getResources().getStringArray(R.array.macguli_list);
-                        Log.e("타입"," " + arr[listAdapter.getDrinkName(i)]);
-                    }
 
-                    String arr1[] = getResources().getStringArray(R.array.number_of_drink);
-                    Log.e("량"," " + arr1[listAdapter.getDrinkNumber(i)]);
-                }
-
-            }
-        });
         button_cancel = (Button)findViewById(R.id.button_cancel);
         button_cancel.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View v){
@@ -78,6 +57,61 @@ public class FeedBackActivity extends AppCompatActivity {
         feedback_title = (TextView) findViewById(R.id.toolbar_title);
         feedback_title.setText("Feed Back");
 
+
+        seekbar_hangover = (SeekBar)findViewById(R.id.seekBar);
+        textview_hangover = (TextView)findViewById(R.id.hangover_textview);
+
+        seekbar_hangover.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+               // Log.e("흠", "" +mSeekBar.getProgress());
+                textview_hangover.setText ("Value = "+progress);
+            }
+        });
+
+
+        button_ok = (Button)findViewById(R.id.button_ok);
+        button_ok.setOnClickListener(new Button.OnClickListener(){
+            public void onClick(View v){
+                for(int i = 0 ; i < listAdapter.getCount(); i++){
+
+                    //Log.e("술"," " + listAdapter.listview_data.get(i).drink_type);
+                    String drink = listAdapter.listview_data.get(i).drink_type;
+                    int drink_type = listAdapter.listview_data.get(i).drink_type_int;
+
+                    String brand;
+                    if(drink_type == 0){
+                        String arr[] = getResources().getStringArray(R.array.soju_list);
+                        brand = arr[listAdapter.getDrinkName(i)];
+                       // Log.e("타입"," " + arr[listAdapter.getDrinkName(i)]);
+                    }
+                    else if(drink_type == 1){
+                        String arr[] = getResources().getStringArray(R.array.macju_list);
+                        brand = arr[listAdapter.getDrinkName(i)];
+                       // Log.e("타입"," " + arr[listAdapter.getDrinkName(i)]);
+                    }
+                    else {
+                        String arr[] = getResources().getStringArray(R.array.macguli_list);
+                        brand = arr[listAdapter.getDrinkName(i)];
+                        //Log.e("타입"," " + arr[listAdapter.getDrinkName(i)]);
+                    }
+
+                    String arr1[] = getResources().getStringArray(R.array.number_of_drink);
+                    int drink_count = Integer.parseInt(arr1[listAdapter.getDrinkNumber(i)]);
+                   // Log.e("량"," " + arr1[listAdapter.getDrinkNumber(i)]);
+
+                    Log.e(""+(i+1),"종류 : " + drink + ", Brand : " + brand + ", 마신 량 :" + drink_count + "잔" );
+                }
+
+                Log.e(" ","숙취 정도 : " + seekbar_hangover.getProgress());
+            }
+        });
 
         display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         int width = (int) (display.getWidth() * 0.7);
