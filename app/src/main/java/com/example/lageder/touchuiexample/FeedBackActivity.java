@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.example.lageder.touchuiexample.MainActivity;
 
 /**
  * Created by LeeSeungMin
@@ -89,7 +90,32 @@ public class FeedBackActivity extends Activity {
                     if(drink_type == 0){
                         String arr[] = getResources().getStringArray(R.array.soju_list);
                         brand = arr[listAdapter.getDrinkName(i)];
-                       // Log.e("타입"," " + arr[listAdapter.getDrinkName(i)]);
+                        SojuDBManager sj_manager = new SojuDBManager(getApplicationContext(), "Test_Soju.db", null, 1);
+                        if(brand.equals("C1")) {
+                            Log.e("DB","Trying to set db value");
+                            sj_manager.insert("insert into SOJU (C1) values (1);");
+                            Log.e("DB","Setting has been done");
+                        }
+                        else if(brand.equals("좋은데이")) {
+                            Log.e("DB","Trying to set db value");
+                            sj_manager.insert("insert into SOJU (GOOD_DAY) values (1);");
+                            Log.e("DB","Setting has been done");
+                        }
+                        else if(brand.equals("순하리")) {
+                            Log.e("DB","Trying to set db value");
+                            sj_manager.insert("insert into SOJU (SOON_HARI) values (1);");
+                            Log.e("DB","Setting has been done");
+                        }
+                        else if(brand.equals("처음처럼")) {
+                            Log.e("DB","Trying to set db value");
+                            sj_manager.insert("insert into SOJU (LIKE_FIRST) values (1);");
+                            Log.e("DB","Setting has been done");
+                        }
+                        else if(brand.equals("한라산")) {
+                            Log.e("DB","Trying to set db value");
+                            sj_manager.insert("insert into SOJU (MT_HANRA) values (1);");
+                            Log.e("DB","Setting has been done");
+                        }
                     }
                     else if(drink_type == 1){
                         String arr[] = getResources().getStringArray(R.array.macju_list);

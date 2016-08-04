@@ -37,10 +37,14 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle drawerToggle;
     private BackPressCloseHandler backPressCloseHandler;
 
+    //SojuDBManager sj_manager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //sj_manager = new SojuDBManager(getApplicationContext(), "Soju.db", null, 1);
 
         backPressCloseHandler = new BackPressCloseHandler(this);
         // Creating Tool bar and setting it as the Toolbar for activity

@@ -4,8 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ALPHATEAM.iml" filepath="$PROJECT_DIR$/ALPHATEAM.iml" />
       <module fileurl="file://$PROJECT_DIR$/HoloCircularProgressBar/HoloCircularProgressBar.iml" filepath="$PROJECT_DIR$/HoloCircularProgressBar/HoloCircularProgressBar.iml" />
-      <module fileurl="file://$PROJECT_DIR$/SmartCupService.iml" filepath="$PROJECT_DIR$/SmartCupService.iml" />
-      <module fileurl="file://$PROJECT_DIR$/TouchUIExample.iml" filepath="$PROJECT_DIR$/TouchUIExample.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

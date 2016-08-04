@@ -41,7 +41,7 @@ import com.lylc.widget.circularprogressbar.R;
 public class CircularProgressBar extends ProgressBar{
 	private static final String TAG = "CircularProgressBar";
 
-	private static final int STROKE_WIDTH = 20;
+	private static final int STROKE_WIDTH = 30;
 
 	private String mTitle = "";		
 	private String mSubTitle = "";
@@ -141,7 +141,7 @@ public class CircularProgressBar extends ProgressBar{
 		mTitlePaint.setStyle(Style.FILL);
 		mTitlePaint.setAntiAlias(true);
 		mTitlePaint.setTypeface(Typeface.create("Roboto-Thin", Typeface.NORMAL));
-		mTitlePaint.setShadowLayer(0.1f, 0, 1, Color.GRAY);
+		//mTitlePaint.setShadowLayer(0.1f, 0, 1, Color.GRAY);
 
 		mSubtitlePaint.setTextSize(50);
 		mSubtitlePaint.setStyle(Style.FILL);
