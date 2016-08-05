@@ -20,7 +20,7 @@ import com.lylc.widget.circularprogressbar.CircularProgressBar;
 /**
  * Created by Ferdousur Rahman Shajib on 27-10-2015.
  */
-public class Tab1 extends Fragment {
+public class Status extends Fragment {
     Activity activity;
     Button button1;
     CircularProgressBar c1;

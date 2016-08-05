@@ -23,6 +23,8 @@
             android:name=".GraphPopupActivity"
             android:theme="@android:style/Theme.Dialog" />
         <activity android:name=".FeedBackActivity"></activity>
+        <activity android:name=".GraphActivity"></activity>
+
     </application>
 
 </manifest>

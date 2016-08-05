@@ -2,9 +2,7 @@ package com.example.lageder.touchuiexample;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -12,15 +10,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.GestureDetector;
-import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     // Declaring my Views and Variables
@@ -29,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
 
-    CharSequence Titles[]={"STATUS","GRAPH"};
+    CharSequence Titles[]={"PROFILE","STATUS"};
     int numOfTabs = 2;
 
     private DrawerLayout mDrawer;
@@ -102,7 +92,8 @@ public class MainActivity extends AppCompatActivity {
                         int id = menuItem.getItemId();
 
                         if (id == R.id.nav_first_fragment) {
-
+                            Intent graph_intent = new Intent(getApplicationContext(), GraphActivity.class);
+                            startActivity(graph_intent);
                         } else if (id == R.id.nav_second_fragment) {
 
                         } else if (id == R.id.nav_third_fragment) {
@@ -128,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         // Pass any configuration change to the drawer toggles
         drawerToggle.onConfigurationChanged(newConfig);
     }
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
@@ -156,5 +147,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 }

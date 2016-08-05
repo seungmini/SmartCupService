@@ -1,14 +1,22 @@
 package com.example.lageder.touchuiexample;
 
-import android.app.Activity;
+
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -25,41 +33,107 @@ import java.util.ArrayList;
  * Created by LeeSeungMin
  */
 
-public class GraphActivity extends Fragment {
-    private Activity activity;
-    private static BarChart chart;
-    private View vi;
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        vi = inflater.inflate(R.layout.activity_graph, container, false);
-        activity = getActivity();
-        chart = (BarChart)vi.findViewById(R.id.chart);
+public class GraphActivity extends AppCompatActivity{
 
+
+    private BarChart chart;
+    private Toolbar toolbar;
+    private Spinner spinner_date;
+    private DrawerLayout mDrawer;
+    private NavigationView nvDrawer;
+    private ActionBarDrawerToggle drawerToggle;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_graph);
+
+        //툴바 설정////////////////////////////////////
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+
+        // Find our drawer view
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerToggle = setupDrawerToggle();
+
+        // Tie DrawerLayout events to the ActionBarToggle
+        mDrawer.addDrawerListener(drawerToggle);
+
+        nvDrawer = (NavigationView) findViewById(R.id.nvView);
+        // Setup drawer view
+        setupDrawerContent(nvDrawer);
+        //툴바 설정////////////////////////////////////
+
+
+        spinner_date = (Spinner)findViewById(R.id.date_spinner);
+        makeSpinnerList();
+        //spinner_date.setOnItemClickListener();
+        spinner_date.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                if(arg2 == 0){
+                    makeWeekGraph();
+                }
+                else{
+                    makeMonthGraph();
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+        ////// 차트 추가
+        chart = (BarChart)findViewById(R.id.chart);
         makeWeekGraph();
 
-        return vi;
     }
 
-/*
+    public void makeSpinnerList(){
+        ArrayList<String> datelist = new ArrayList<>();
+        datelist.add("최근 한주 GRAPH");
+        datelist.add("최근 한달 GRAPH");
+        ArrayAdapter<String> list = new ArrayAdapter<String>(this,R.layout.spinner_item,datelist);
+        spinner_date.setAdapter(list);
+    }
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        return new ActionBarDrawerToggle(this,mDrawer,toolbar,R.string.drawer_open,R.string.drawer_close);
+    }
+
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        int id = menuItem.getItemId();
+
+                        if (id == R.id.nav_first_fragment) {
+                        //    Intent graph_intent = new Intent(getApplicationContext(), GraphActivity.class);
+                         //   startActivity(graph_intent);
+                        } else if (id == R.id.nav_second_fragment) {
+
+                        } else if (id == R.id.nav_third_fragment) {
+                            Intent feedback_intent = new Intent(getApplicationContext(), FeedBackActivity.class);
+                            startActivity(feedback_intent);
+                        }
+                        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                        drawer.closeDrawer(GravityCompat.START);
+                        return true;
+                    }
+                });
+    }
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
-        switch(item.getItemId()){
-            case R.id.item_week:
-                makeWeekGraph();
-                return true;
-            case R.id.item_month:
-                makeMonthGraph();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-
-        }
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
     }
-*/
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggles
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
 
     public BarDataSet getDataSet_week(){
         //값 설정
@@ -127,6 +201,7 @@ public class GraphActivity extends Fragment {
         chart.animateY(2000);
     }
     public void makeMonthGraph(){
+
         BarData data = new BarData(getXLabel_month(), getDataSet_month());
         chart.setData(data);
         chart.setTouchEnabled(true);
@@ -152,7 +227,7 @@ public class GraphActivity extends Fragment {
             public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
                 switch(e.getXIndex()){
                     case 0:
-                        Intent graph_popup_intent = new Intent(getActivity().getApplicationContext(), GraphPopupActivity.class);
+                        Intent graph_popup_intent = new Intent(getApplicationContext(), GraphPopupActivity.class);
                         graph_popup_intent.putExtra("chart_number",0);
                         startActivity(graph_popup_intent);
                         break;
@@ -165,7 +240,9 @@ public class GraphActivity extends Fragment {
                     case 3:
                         Log.d("Tag","Select Forth Bar");
                         break;
+
                 }
+
             }
 
             @Override
@@ -176,4 +253,5 @@ public class GraphActivity extends Fragment {
         chart.setDescription("description");
         chart.animateY(2000);
     }
+
 }
