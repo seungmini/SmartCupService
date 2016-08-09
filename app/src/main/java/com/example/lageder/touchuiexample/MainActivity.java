@@ -129,33 +129,5 @@ public class MainActivity extends AppCompatActivity {
         // Pass any configuration change to the drawer toggles
         drawerToggle.onConfigurationChanged(newConfig);
     }
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.menu_1week:
-                adapter.getGraphActivity().makeWeekGraph();
-                Log.e("Graph","Button1 listen");
-                break;
-
-            case R.id.menu_4week:
-                adapter.getGraphActivity().makeMonthGraph();
-                Log.e("Graph","Button2 listen");
-                break;
-
-            case R.id.menu_24week:
-                //adapter.getGraphActivity().makeMonthGraph();
-                Log.e("Graph","Button3 listen");
-                break;
-
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
 }

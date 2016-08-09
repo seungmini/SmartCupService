@@ -58,16 +58,8 @@ public class KakaoLoginActivity extends Activity {
         ActivityCompat.finishAffinity(this);
         System.runFinalizersOnExit(true);
         System.exit(0);
-        //super.onBackPressed();
     }
-    public void sendLink(){
-        try {
-            kakaoTalkLinkMessageBuilder.addText("테스트!");
-            kakaoLink.sendMessage(kakaoTalkLinkMessageBuilder,this);
-        } catch (KakaoParameterException e) {
-            e.getMessage();
-        }
-    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //간편로그인시 호출 ,없으면 간편로그인시 로그인 성공화면으로 넘어가지 않음
