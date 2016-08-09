@@ -2,7 +2,63 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:circular="http://schemas.android.com/apk/res-auto"
     tools:context=".ProfileFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
+            android:layout_weight="1"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/profile_imageview"
+                android:paddingTop="10dp"
+                android:src="@drawable/minus_white_icon"
+                android:layout_weight="1"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/name_textview"
+                    android:gravity="center"
+                    android:textSize="20dp"
+                    android:text="이름 : 연동 전"/>
+
+
+                <com.lylc.widget.circularprogressbar.CircularProgressBar
+                    android:id="@+id/circularprogressbar1"
+                    style="@style/Widget.ProgressBar.CircularProgressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    circular:title="Title"/>
+                    <!--android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"-->
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="상태창"/>
+
+        </LinearLayout>
+    </LinearLayout>
 
 </FrameLayout>

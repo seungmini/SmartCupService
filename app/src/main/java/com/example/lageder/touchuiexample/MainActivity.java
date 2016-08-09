@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import java.io.File;
+
 public class MainActivity extends AppCompatActivity {
     // Declaring my Views and Variables
     Toolbar toolbar;
@@ -33,6 +35,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        String name_path=getFilesDir(). getAbsolutePath()+"/name.txt";
+        File name_file = new File(name_path);
+
+        if(name_file.exists() != true){
+            Intent graph_intent = new Intent(getApplicationContext(), KakaoLoginActivity.class);
+            startActivity(graph_intent);
+        }
 
         //sj_manager = new SojuDBManager(getApplicationContext(), "Soju.db", null, 1);
 
@@ -72,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         tabs.setViewPager(pager);
-
     }
 
     @Override
@@ -95,7 +104,8 @@ public class MainActivity extends AppCompatActivity {
                             Intent graph_intent = new Intent(getApplicationContext(), GraphActivity.class);
                             startActivity(graph_intent);
                         } else if (id == R.id.nav_second_fragment) {
-
+                            Intent graph_intent = new Intent(getApplicationContext(), KakaoLoginActivity.class);
+                            startActivity(graph_intent);
                         } else if (id == R.id.nav_third_fragment) {
                             Intent feedback_intent = new Intent(getApplicationContext(), FeedBackActivity.class);
                             startActivity(feedback_intent);

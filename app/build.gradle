@@ -26,4 +26,13 @@ dependencies {
     compile 'com.android.support:design:24.0.0'
     compile project(':HoloCircularProgressBar')
     compile files('libs/mpandroidchartlibrary-2-2-4.jar')
+    compile group: project.KAKAO_SDK_GROUP, name: 'kakaolink', version: project.KAKAO_SDK_VERSION
+
+    // 카카오톡 sdk를 사용하기 위해 필요.
+    compile group: project.KAKAO_SDK_GROUP, name: 'kakaotalk', version: project.KAKAO_SDK_VERSION
+
+    // push sdk를 사용하기 위해 필요.
+    compile group: project.KAKAO_SDK_GROUP, name: 'push', version: project.KAKAO_SDK_VERSION
+    compile group: project.KAKAO_SDK_GROUP, name: 'usermgmt', version: project.KAKAO_SDK_VERSION
+
 }
