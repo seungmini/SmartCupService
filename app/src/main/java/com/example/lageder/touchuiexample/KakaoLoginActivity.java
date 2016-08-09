@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.Display;
 
@@ -51,7 +52,14 @@ public class KakaoLoginActivity extends Activity {
         callback = new SessionCallback();
         Session.getCurrentSession().addCallback(callback);
     }
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        ActivityCompat.finishAffinity(this);
+        System.runFinalizersOnExit(true);
+        System.exit(0);
+        //super.onBackPressed();
+    }
     public void sendLink(){
         try {
             kakaoTalkLinkMessageBuilder.addText("테스트!");
