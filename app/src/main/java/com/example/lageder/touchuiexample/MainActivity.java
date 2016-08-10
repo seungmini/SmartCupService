@@ -104,8 +104,7 @@ public class MainActivity extends AppCompatActivity {
                             Intent graph_intent = new Intent(getApplicationContext(), GraphActivity.class);
                             startActivity(graph_intent);
                         } else if (id == R.id.nav_second_fragment) {
-                            Intent graph_intent = new Intent(getApplicationContext(), KakaoLoginActivity.class);
-                            startActivity(graph_intent);
+
                         } else if (id == R.id.nav_third_fragment) {
                             Intent feedback_intent = new Intent(getApplicationContext(), FeedBackActivity.class);
                             startActivity(feedback_intent);

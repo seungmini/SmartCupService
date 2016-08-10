@@ -149,13 +149,13 @@ public class CustomAdapter extends BaseAdapter {
     public void add(int type) {
         ListData new_data = new ListData();
         if(type == 0){
-            new_data.drink_type = "소주　";
+            new_data.drink_type = "소";
         }
         else if (type == 1){
-            new_data.drink_type = "맥주　";
+            new_data.drink_type = "맥";
         }
         else if(type == 2){
-            new_data.drink_type = "막걸리";
+            new_data.drink_type = "막";
         }
         new_data.drink_type_int = type;
 

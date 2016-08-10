@@ -1,14 +1,13 @@
 <resources>
     <string-array name="macguli_list">
-        <item>국순당쌀 막걸리</item>
-        <item>금정산성 막걸리</item>
-        <item>느린마을 막걸리</item>
-        <item>대박 막걸리</item>
+        <item>국순당쌀</item>
+        <item>금정산성</item>
+        <item>느린마을</item>
+        <item>대박</item>
         <item>생탁</item>
-        <item>서울장수 막걸리</item>
-        <item>서울월매 막걸리</item>
-        <item>이동 막걸리</item>
+        <item>서울장수</item>
+        <item>서울월매</item>
+        <item>이동</item>
         <item>우국생</item>
-        <item>이동 막걸리</item>
     </string-array>
 </resources>

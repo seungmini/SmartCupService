@@ -38,7 +38,7 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onAnimationFinish() {
-                c1.setTitle("Concentration");
+                c1.setTitle("286ml");
             }
 
             @Override
@@ -63,8 +63,8 @@ public class ProfileFragment extends Fragment {
                 FileInputStream fis = new FileInputStream(name_file);
                 byte[] buffer = new byte[fis.available()];
                 fis.read(buffer);
-                String str = new String(buffer);
-                name_textview.setText(str);
+                String name = new String(buffer);
+                name_textview.setText("이름 : " + name);
                 fis.close();
             } catch (IOException e) {
                 Log.e("File", "에러=" + e);
