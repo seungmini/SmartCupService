@@ -1,6 +1,10 @@
 package com.example.lageder.touchuiexample;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.content.res.Configuration;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -10,9 +14,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
 
 import java.io.File;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
     // Declaring my Views and Variables
@@ -38,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         String name_path=getFilesDir(). getAbsolutePath()+"/name.txt";
         File name_file = new File(name_path);
+        getAppKeyHash();
 
         if(name_file.exists() != true){
             Intent graph_intent = new Intent(getApplicationContext(), KakaoLoginActivity.class);
@@ -50,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         // Creating Tool bar and setting it as the Toolbar for activity
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // Find our drawer view
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -82,6 +92,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
         tabs.setViewPager(pager);
+    }
+    private void getAppKeyHash() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md;
+                md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String something = new String(Base64.encode(md.digest(), 0));
+                Log.e("Hash key", something);
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            Log.e("name not found", e.toString());
+        }
+
     }
 
     @Override

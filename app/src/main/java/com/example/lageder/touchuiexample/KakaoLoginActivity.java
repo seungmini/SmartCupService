@@ -42,15 +42,16 @@ public class KakaoLoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kakao_login);
 
-
         try {
             kakaoLink = KakaoLink.getKakaoLink(this);
             kakaoTalkLinkMessageBuilder = kakaoLink.createKakaoTalkLinkMessageBuilder();
         } catch (KakaoParameterException e) {
+
             e.getMessage();
         }
         callback = new SessionCallback();
         Session.getCurrentSession().addCallback(callback);
+
     }
     @Override
     public void onBackPressed() {
@@ -79,6 +80,8 @@ public class KakaoLoginActivity extends Activity {
 
                 @Override
                 public void onFailure(ErrorResult errorResult) {
+                    Log.e("??"," ??????실패");
+
                     String message = "failed to get user info. msg=" + errorResult;
                     Logger.d(message);
 
@@ -92,9 +95,13 @@ public class KakaoLoginActivity extends Activity {
 
                 @Override
                 public void onSessionClosed(ErrorResult errorResult) {
+                    Log.e("??"," 들어옴");
+
                 }
                 @Override
                 public void onNotSignedUp() {
+                    Log.e("??"," 들어옴2");
+
                 }
 
                 @Override
@@ -116,7 +123,7 @@ public class KakaoLoginActivity extends Activity {
                     String url1 = userProfile.getProfileImagePath();
                     String profile = "profile.jpg";
                     new HttpReqTask().execute(url1, profile);
-
+                    Log.e("??"," ??????");
                     finish();
                 }
             });
@@ -125,6 +132,8 @@ public class KakaoLoginActivity extends Activity {
 
         @Override
         public void onSessionOpenFailed(KakaoException exception) {
+            Log.e("??"," " + exception);
+
             // 세션 연결이 실패했을때
         }
     }
