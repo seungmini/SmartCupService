@@ -56,7 +56,7 @@ public class SojuDBManager extends SQLiteOpenHelper {
         db.close();
     }
 
-    public SOOL[] SortData() {
+    public SOOL[] PrintData() {
         SQLiteDatabase db = getReadableDatabase();
         SOOL[] sools = new SOOL[5];
 
