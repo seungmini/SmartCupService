@@ -22,12 +22,13 @@ import java.io.IOException;
 public class ProfileFragment extends Fragment {
 
     CircularProgressBar c1;
-    public static TextView name_textview;
+    public static TextView name_textview,soju_textview,makg_textview,beer_textview;
     public static ImageView profile_imagview;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
+        SojuDBManager db = new SojuDBManager(getActivity(), "Sample.db", null, 1);
 
         c1 = (CircularProgressBar) v.findViewById(R.id.circularprogressbar1);
         int current_value = 95;
@@ -48,7 +49,13 @@ public class ProfileFragment extends Fragment {
         });
 
         name_textview = (TextView) v.findViewById(R.id.name_textview);
+        soju_textview = (TextView)v.findViewById(R.id.most_soju);
+        beer_textview = (TextView)v.findViewById(R.id.most_beer);
+        makg_textview = (TextView)v.findViewById(R.id.most_makg);
+
         profile_imagview = (ImageView) v.findViewById(R.id.profile_imageview);
+
+
 
         String name_path = getActivity().getApplicationContext().getFilesDir().getAbsolutePath() + "/name.txt";
         String image_path = getActivity().getApplicationContext().getFilesDir().getAbsolutePath() + "/profile.jpg";
@@ -71,6 +78,14 @@ public class ProfileFragment extends Fragment {
             }
 
         }
+
+        soju_textview.setText("소주 : " +db.getMostSoju());
+        beer_textview.setText("맥주 : " +db.getMostBeer());
+        makg_textview.setText("막걸리 : " +db.getMostMakg());
+
+        db.getMostTime();
         return v;
     }
+
+
 }

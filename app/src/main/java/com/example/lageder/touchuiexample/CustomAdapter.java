@@ -97,12 +97,12 @@ public class CustomAdapter extends BaseAdapter {
             holder.drink_name_spinner.setAdapter(list);
         }
         else if(listview_data.get(position).drink_type_int == 1){
-            String arr[] = context.getResources().getStringArray(R.array.macju_list);
+            String arr[] = context.getResources().getStringArray(R.array.beer_list);
             ArrayAdapter<String> list = new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,arr);
             holder.drink_name_spinner.setAdapter(list);
         }
         else{
-            String arr[] = context.getResources().getStringArray(R.array.macguli_list);
+            String arr[] = context.getResources().getStringArray(R.array.makgeolli_list);
             ArrayAdapter<String> list = new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,arr);
             holder.drink_name_spinner.setAdapter(list);
         }

@@ -61,7 +61,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="USER INFORMATION"/>
-
+            <TextView
+                android:paddingLeft="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="선호도"/>
+            <TextView
+                android:paddingLeft="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="선호 브랜드"/>
+            <TextView
+                android:paddingLeft="15dp"
+                android:id="@+id/most_soju"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="소주 : "/>
+            <TextView
+                android:paddingLeft="15dp"
+                android:id="@+id/most_beer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="맥주 : "/>
+            <TextView
+                android:paddingLeft="15dp"
+                android:id="@+id/most_makg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="막걸리 : "/>
         </LinearLayout>
     </LinearLayout>
 

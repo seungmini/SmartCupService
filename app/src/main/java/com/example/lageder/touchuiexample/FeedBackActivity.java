@@ -52,7 +52,7 @@ public class FeedBackActivity extends Activity {
             public void onClick(View v) {
                 Log.e("갯수", " " + listAdapter.getCount());
                 SojuDBManager sj_manager = new SojuDBManager(getApplicationContext(), "Test_Soju.db", null, 1);
-                sj_manager.PrintData();
+                sj_manager.printData();
                 //finish();
             }
         });
@@ -134,11 +134,11 @@ public class FeedBackActivity extends Activity {
                         and (SOJU.sqltime < '2016-08-05 00:00:00');*/
 
                     } else if (drink_type == 1) {
-                        String arr[] = getResources().getStringArray(R.array.macju_list);
+                        String arr[] = getResources().getStringArray(R.array.beer_list);
                         brand = arr[listAdapter.getDrinkName(i)];
                         // Log.e("타입"," " + arr[listAdapter.getDrinkName(i)]);
                     } else {
-                        String arr[] = getResources().getStringArray(R.array.macguli_list);
+                        String arr[] = getResources().getStringArray(R.array.makgeolli_list);
                         brand = arr[listAdapter.getDrinkName(i)];
                         //Log.e("타입"," " + arr[listAdapter.getDrinkName(i)]);
                     }

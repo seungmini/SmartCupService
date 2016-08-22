@@ -1,13 +1,10 @@
 <resources>
-    <string-array name="macguli_list">
+    <string-array name="makgeolli_list">
         <item>국순당쌀</item>
         <item>금정산성</item>
         <item>느린마을</item>
-        <item>대박</item>
         <item>생탁</item>
         <item>서울장수</item>
-        <item>서울월매</item>
-        <item>이동</item>
         <item>우국생</item>
     </string-array>
 </resources>
