@@ -22,8 +22,10 @@ import java.io.IOException;
 public class ProfileFragment extends Fragment {
 
     CircularProgressBar c1;
-    public static TextView name_textview,soju_textview,makg_textview,beer_textview;
+    public static TextView name_textview,soju_textview,makg_textview,beer_textview,time_textview;
     public static ImageView profile_imagview;
+    public int[] count;
+    public int time, max = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,9 +54,9 @@ public class ProfileFragment extends Fragment {
         soju_textview = (TextView)v.findViewById(R.id.most_soju);
         beer_textview = (TextView)v.findViewById(R.id.most_beer);
         makg_textview = (TextView)v.findViewById(R.id.most_makg);
+        time_textview = (TextView)v.findViewById(R.id.drunk_time);
 
         profile_imagview = (ImageView) v.findViewById(R.id.profile_imageview);
-
 
 
         String name_path = getActivity().getApplicationContext().getFilesDir().getAbsolutePath() + "/name.txt";
@@ -79,6 +81,21 @@ public class ProfileFragment extends Fragment {
 
         }
 
+/*
+        count로 받은거로 계산하여 textview로 추가
+        count = db.getMostTime();
+*/
+
+        count = db.getMostTime();
+
+        for(int i=0;i<29;i++) {
+            if(count[i] >= max) {
+                max = count[i];
+                time = i;
+            }
+        }
+
+        time_textview.setText("자주 먹는 시간대: "+ time + "시");
         soju_textview.setText("소주 : " +db.getMostSoju());
         beer_textview.setText("맥주 : " +db.getMostBeer());
         makg_textview.setText("막걸리 : " +db.getMostMakg());

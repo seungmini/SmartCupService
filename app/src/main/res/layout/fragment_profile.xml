@@ -70,6 +70,12 @@
                 android:paddingLeft="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/drunk_time"
+                android:text="주요 음주 시간"/>
+            <TextView
+                android:paddingLeft="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="선호 브랜드"/>
             <TextView
                 android:paddingLeft="15dp"

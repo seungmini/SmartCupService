@@ -121,7 +121,7 @@ public class SojuDBManager extends SQLiteOpenHelper {
         return sools;
     }
 
-    public void getMostTime(){
+    public int[] getMostTime(){
         SQLiteDatabase db = getReadableDatabase();
         Cursor cs;
         int[] count = new int[29];
@@ -137,18 +137,19 @@ public class SojuDBManager extends SQLiteOpenHelper {
             if(f_time < 5){
                 f_time = f_time + 24;
             }
-            /*
+
             for(int time = s_time; time <= f_time; time++){
                 count[time]++;
-            }*/
-            count[s_time]++;
+            }
+
+            /*count[s_time]++;*/
             //Log.e(""," " + s_time + " // " + f_time);
         }
 
         for(int i = 0 ; i < 29; i++){
             Log.e(""," i : " + i + " count : " + count[i]);
         }
-
+        return count;
     }
 
 

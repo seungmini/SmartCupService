@@ -51,8 +51,9 @@ public class FeedBackActivity extends Activity {
         button_cancel.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 Log.e("갯수", " " + listAdapter.getCount());
-                SojuDBManager sj_manager = new SojuDBManager(getApplicationContext(), "Test_Soju.db", null, 1);
+                SojuDBManager sj_manager = new SojuDBManager(getApplicationContext(), "Sample.db", null, 1);
                 sj_manager.printData();
+                //sj_manager.getMostTime();
                 //finish();
             }
         });
