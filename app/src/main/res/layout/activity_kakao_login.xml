@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.lageder.touchuiexample.KakaoLoginActivity">
+    tools:context="kakaolinkage.KakaoLoginActivity">
 
         <com.kakao.usermgmt.LoginButton
             android:id="@+id/com_kakao_login"

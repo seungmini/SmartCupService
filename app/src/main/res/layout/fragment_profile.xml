@@ -2,100 +2,176 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#D5D5D5"
     xmlns:circular="http://schemas.android.com/apk/res-auto"
-    tools:context=".ProfileFragment">
+    tools:context="tabview.ProfileFragment">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="-20dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-            <ImageView
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:layout_width="170dp"
+                android:layout_height="170dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:id="@+id/profile_imageview" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/name_textview"
+                android:textSize="30dp"
+                android:text="연동 전"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:textColor="#000000" />
+        </LinearLayout>
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#CACACA" />
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/profile_imageview"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/no_profile"
-                android:layout_weight="1"/>
-            <RelativeLayout
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:paddingLeft="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:textColor="#000000"
+                    android:gravity="center_vertical"
+                    android:textSize="17dp"
+                    android:id="@+id/most_day"
+                    android:text="선호 요일, 시간"/>
+                <TextView
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
+                    android:paddingLeft="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:textColor="#000000"
+                    android:gravity="right|center"
+                    android:textSize="18dp"
+                    android:id="@+id/most_day_result"
+                    android:text="금요일, 20시"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#CACACA" />
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:paddingLeft="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:textColor="#000000"
+                    android:gravity="center_vertical"
+                    android:textSize="17dp"
+                    android:id="@+id/lastest_time"
+                    android:text="최근 음주 시간"/>
+                <TextView
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
+                    android:paddingLeft="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:textColor="#000000"
+                    android:gravity="right|center"
+                    android:textSize="18dp"
+                    android:id="@+id/lastest_time_result"
+                    android:text="2016-09-05 20:00"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#CACACA" />
+            <TextView
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:paddingLeft="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:id="@+id/brand"
+                android:text="선호 브랜드"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/name_textview"
-                    android:textSize="20dp"
-                    android:text="이름 : 연동 전"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="20dp" />
-                <com.lylc.widget.circularprogressbar.CircularProgressBar
-                    android:id="@+id/circularprogressbar1"
-                    style="@style/Widget.ProgressBar.CircularProgressBar"
-                    android:layout_width="170dip"
-                    android:layout_height="170dip"
-                    circular:title="Title"
-                    android:layout_below="@+id/name_textview"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="20dp" />
-            </RelativeLayout>
-        </LinearLayout>
+                    android:layout_weight="1"
+                    android:id="@+id/most_soju"
+                    android:drawablePadding="12dp"
+                    android:textSize="17dp"
+                    android:gravity="center"
+                    android:textColor="#000000"
+                    android:drawableTop="@drawable/soju_32"/>
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="#CACACA"/>
 
-        <LinearLayout
-            android:layout_marginBottom="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/round_border"
-            android:orientation="vertical"
-            android:layout_weight="6">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/most_beer"
+                    android:drawablePadding="12dp"
+                    android:textSize="17dp"
+                    android:gravity="center"
+                    android:textColor="#000000"
+                    android:drawableTop="@drawable/beer_32"/>
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="#CACACA"/>
 
-            <TextView
-                android:padding="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="USER INFORMATION"/>
-            <TextView
-                android:paddingLeft="15dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="선호도"/>
-            <TextView
-                android:paddingLeft="15dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/drunk_time"
-                android:text="주요 음주 시간"/>
-            <TextView
-                android:paddingLeft="15dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="선호 브랜드"/>
-            <TextView
-                android:paddingLeft="15dp"
-                android:id="@+id/most_soju"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="소주 : "/>
-            <TextView
-                android:paddingLeft="15dp"
-                android:id="@+id/most_beer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="맥주 : "/>
-            <TextView
-                android:paddingLeft="15dp"
-                android:id="@+id/most_makg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="막걸리 : "/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/most_makg"
+                    android:drawablePadding="12dp"
+                    android:textSize="17dp"
+                    android:gravity="center"
+                    android:textColor="#000000"
+                    android:drawableTop="@drawable/bowl_32"/>
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
-
 </FrameLayout>
