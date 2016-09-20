@@ -90,17 +90,31 @@ public class SCSDBManager extends SQLiteOpenHelper {
         db.close();
     }
 
-
-    public int[] getMostTime(){
+    public String getLatestTime(){
         SQLiteDatabase db = getReadableDatabase();
         Cursor cs;
+        String query = "select s_time from CUP order by s_time desc limit 1";
+
+        cs = db.rawQuery(query, null);
+        cs.moveToFirst();
+
+        return cs.getString(0);
+    }
+
+
+    public String getMostTime(){
+        String result="";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cs;
+        Map<Integer, Integer> count_time = new HashMap<Integer, Integer>();
         int[] count = new int[29];
         for(int i = 0 ; i < 29;i++){
             count[i] = 0;
         }
-        String query = "select strftime('%H',s_time),strftime('%H',f_time) from CUP";
+        String query_time = "select strftime('%H',s_time),strftime('%H',f_time) from CUP";
 
-        cs = db.rawQuery(query,null);
+        cs = db.rawQuery(query_time,null);
+        cs.moveToFirst();
         while(cs.moveToNext()) {
             int s_time = cs.getInt(0);
             int f_time = cs.getInt(1);
@@ -111,13 +125,89 @@ public class SCSDBManager extends SQLiteOpenHelper {
             for(int time = s_time; time <= f_time; time++){
                 count[time]++;
             }
-
-            /*count[s_time]++;*/
-            //Log.e(""," " + s_time + " // " + f_time);
+        }
+        for(int i = 0; i < 29; i++){
+            count_time.put(i,count[i]);
+        }
+        int result_time = 0;
+        int maxValueInMap_time=(Collections.max(count_time.values()));  // This will return max value in the Hashmap
+        for (Map.Entry<Integer, Integer> entry : count_time.entrySet()) {  // Itrate through hashmap
+            if (entry.getValue() == maxValueInMap_time) {
+                result_time = entry.getKey();     // Print the key with max value
+            }
+        }
+        if(result_time >= 25){
+            result_time -= 24;
         }
 
 
-        return count;
+        Cursor cs_day;
+        //String query_day = "select s_time from CUP";
+        String query_day = "SELECT strftime('%Y',s_time),strftime('%m',s_time),strftime('%d',s_time), strftime('%H',s_time) FROM CUP";
+
+        cs_day = db.rawQuery(query_day,null);
+        cs_day.moveToFirst();
+        Calendar cal = Calendar.getInstance();
+        Map<Integer, Integer> count_day = new HashMap<Integer, Integer>();
+
+        int[] day = new int[8];
+        for(int i = 0 ; i < 8; i++){
+            day[i] = 0;
+        }
+        while(cs_day.moveToNext()) {
+
+            cal.set(Calendar.YEAR, Integer.parseInt(cs_day.getString(0)));
+            cal.set(Calendar.MONTH, Integer.parseInt(cs_day.getString(1)) - 1);
+            cal.set(Calendar.DATE, Integer.parseInt(cs_day.getString(2)));
+
+            int dayNum = cal.get(Calendar.DAY_OF_WEEK);//1 =일요일
+
+            if(cs_day.getInt(3) <=5){
+                dayNum--;
+                if(dayNum == 0){
+                    dayNum = 7;
+                }
+            }
+
+
+            day[dayNum]++;
+        }
+        for(int i = 0; i < 8; i++){
+            count_day.put(i,day[i]);
+        }
+        int result_day_num = 0;
+        int maxValueInMap_day=(Collections.max(count_day.values()));  // This will return max value in the Hashmap
+        for (Map.Entry<Integer, Integer> entry : count_day.entrySet()) {  // Itrate through hashmap
+            if (entry.getValue()==maxValueInMap_day) {
+                result_day_num = entry.getKey();     // Print the key with max value
+            }
+        }
+        String result_day="";
+        switch(result_day_num){
+            case 1:
+                result_day = "일";
+                break;
+            case 2:
+                result_day = "월";
+                break;
+            case 3:
+                result_day = "화";
+                break;
+            case 4:
+                result_day = "수";
+                break;
+            case 5:
+                result_day = "목";
+                break;
+            case 6:
+                result_day = "금";
+                break;
+            case 7:
+                result_day = "토";
+                break;
+        }
+        result = result_day + "요일, " + result_time + "시";
+        return result;
     }
 
 
@@ -167,7 +257,6 @@ public class SCSDBManager extends SQLiteOpenHelper {
         return result;
     }
 
-
     public String getMostBeer(){
         SQLiteDatabase db = getReadableDatabase();
         Cursor cs;
@@ -208,7 +297,6 @@ public class SCSDBManager extends SQLiteOpenHelper {
 
         return result;
     }
-
 
     public String getMostMakg(){
         SQLiteDatabase db = getReadableDatabase();
@@ -578,4 +666,5 @@ public class SCSDBManager extends SQLiteOpenHelper {
         return dataSets;
 
     }
+
 }

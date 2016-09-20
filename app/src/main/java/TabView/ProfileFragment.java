@@ -43,8 +43,11 @@ public class ProfileFragment extends Fragment {
 
         time_textview = (TextView)v.findViewById(R.id.lastest_time);
         time_result_textview = (TextView)v.findViewById(R.id.lastest_time_result);
+        time_result_textview.setText(db.getLatestTime());
+
         day_textview = (TextView)v.findViewById(R.id.most_day);
         day_result_textview = (TextView)v.findViewById(R.id.most_day_result);
+        day_result_textview.setText(db.getMostTime());
 
         brand_textview = (TextView)v.findViewById(R.id.brand);
         // ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Profile");

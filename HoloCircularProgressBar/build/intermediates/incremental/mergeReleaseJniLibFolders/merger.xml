@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="C:\Project\Android\ALPHATEAM\HoloCircularProgressBar\src\main\jniLibs"/></dataSet><dataSet config="release"><source path="C:\Project\Android\ALPHATEAM\HoloCircularProgressBar\src\release\jniLibs"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="C:\Project\Android\SmartCupService\HoloCircularProgressBar\src\main\jniLibs"/></dataSet><dataSet config="release"><source path="C:\Project\Android\SmartCupService\HoloCircularProgressBar\src\release\jniLibs"/></dataSet></merger>

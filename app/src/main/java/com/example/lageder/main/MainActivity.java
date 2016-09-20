@@ -1,6 +1,9 @@
 package com.example.lageder.main;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -13,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 
 import kakaolinkage.KakaoLoginActivity;
 
@@ -88,7 +92,7 @@ public class MainActivity  extends AppCompatActivity{
 
     }
 
-    /*private void getAppKeyHash() {
+    private void getAppKeyHash() {
         try {
             PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
@@ -104,7 +108,7 @@ public class MainActivity  extends AppCompatActivity{
         }
 
     }
-*/
+
     @Override
     public void onBackPressed() {
         backPressCloseHandler.onBackPressed();

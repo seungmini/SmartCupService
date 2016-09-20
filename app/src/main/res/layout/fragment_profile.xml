@@ -72,7 +72,7 @@
                     android:gravity="right|center"
                     android:textSize="18dp"
                     android:id="@+id/most_day_result"
-                    android:text="금요일, 20시"/>
+                    />
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
