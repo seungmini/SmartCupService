@@ -2,7 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.lageder.main">
 
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:name="kakaolinkage.GlobalApplication"
@@ -15,7 +19,7 @@
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
 
-        <activity android:name="com.example.lageder.main.MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -33,6 +37,8 @@
 
         <activity android:name="tabview.FeedBackActivity"></activity>
         <activity android:name="kakaolinkage.KakaoLoginActivity" />
+        <activity android:name="bluetoothLe.DevicePopupActivity"></activity>
+        <service android:name=".BluetoothLeService" android:enabled="true"></service>
 
     </application>
 

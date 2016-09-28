@@ -33,7 +33,7 @@ public class SCSDBManager extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // 새로운 테이블을 생성한다.
         // create table 테이블명 (컬럼명 타입 옵션);
-        /*db.execSQL("CREATE TABLE IF NOT EXISTS SOJU ("+
+        db.execSQL("CREATE TABLE IF NOT EXISTS SOJU ("+
                 "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                 "sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL," +
                 "C1 integer default 0,"+
@@ -63,7 +63,18 @@ public class SCSDBManager extends SQLiteOpenHelper {
                 "SEOU integer default 0,"+
                 "UGUK integer default 0"+
                 " );");
-*/
+
+        db.execSQL(
+                "CREATE TABLE IF NOT EXISTS CUP (" +
+                        "s_time TIMESTAMP NOT NULL, " +
+                        "f_time TIMESTAMP NOT NULL, " +
+                        "ml_soju integer DEFAULT 0, " +
+                        "ml_macj integer DEFAULT 0, " +
+                        "ml_mack integer DEFAULT 0, " +
+                        "hangover integer DEFAULT 0, " +
+                        "PRIMARY KEY(s_time));"
+        );
+
     }
     // IF NOT EXISTS
 
@@ -98,7 +109,14 @@ public class SCSDBManager extends SQLiteOpenHelper {
         cs = db.rawQuery(query, null);
         cs.moveToFirst();
 
-        return cs.getString(0);
+        if(cs.getCount() == 0) {
+            return "0";
+        }
+        else {
+            return cs.getString(0);
+        }
+
+
     }
 
 

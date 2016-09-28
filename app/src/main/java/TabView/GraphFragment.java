@@ -108,7 +108,7 @@ public class GraphFragment extends Fragment {
     }
 
     public void makeWeekGraph(){
-        SCSDBManager db = new SCSDBManager(getActivity(), "Sample.db", null, 1);
+        SCSDBManager db = new SCSDBManager(getActivity(), "abcde.db", null, 1);
 
         BarData data = new BarData(getXLabel_week(), db.getDataSet_thisweek());
         data.setValueFormatter(new YValueFormatter());
