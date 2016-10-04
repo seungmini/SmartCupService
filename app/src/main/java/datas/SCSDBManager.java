@@ -83,7 +83,7 @@ public class SCSDBManager extends SQLiteOpenHelper {
 
     }
 
-    public void insert(String _query) {
+    public void executeQuery(String _query) {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(_query);
         db.close();

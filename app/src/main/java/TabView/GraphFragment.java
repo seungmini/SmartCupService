@@ -202,8 +202,9 @@ public class GraphFragment extends Fragment {
                         startActivity(graph_popup_intent);
                         break;
                     case 3:
-                        graph_popup_intent = new Intent(getContext(), GraphPopupActivity.class);
-                        graph_popup_intent.putExtra("chart_number",4);
+                        //graph_popup_intent = new Intent(getContext(), GraphPopupActivity.class);
+                        graph_popup_intent = new Intent(getContext(), FeedBackActivity.class);
+                        //graph_popup_intent.putExtra("chart_number",4);
                         startActivity(graph_popup_intent);
                         break;
 

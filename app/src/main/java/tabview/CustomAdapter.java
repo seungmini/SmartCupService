@@ -2,6 +2,8 @@ package tabview;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -98,19 +100,23 @@ public class CustomAdapter extends BaseAdapter {
 
        if(listview_data.get(position).drink_type_int== 0){
             String arr[] = context.getResources().getStringArray(R.array.soju_list);
-            ArrayAdapter<String> list = new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,arr);
+            ArrayAdapter<String> list = new ArrayAdapter<String>(context,R.layout.feedback_spinner_item,arr);
             holder.drink_name_spinner.setAdapter(list);
         }
         else if(listview_data.get(position).drink_type_int == 1){
             String arr[] = context.getResources().getStringArray(R.array.beer_list);
-            ArrayAdapter<String> list = new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,arr);
+            ArrayAdapter<String> list = new ArrayAdapter<String>(context,R.layout.feedback_spinner_item,arr);
             holder.drink_name_spinner.setAdapter(list);
         }
         else{
             String arr[] = context.getResources().getStringArray(R.array.makgeolli_list);
-            ArrayAdapter<String> list = new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,arr);
+            ArrayAdapter<String> list = new ArrayAdapter<String>(context,R.layout.feedback_spinner_item,arr);
             holder.drink_name_spinner.setAdapter(list);
         }
+
+        String arr[] = context.getResources().getStringArray(R.array.number_of_drink);
+        ArrayAdapter<String> list = new ArrayAdapter<String>(context,R.layout.feedback_spinner_item,arr);
+        holder.drink_number_spinner.setAdapter(list);
 
         ImageView buttonLA = (ImageView) vi.findViewById(R.id.image_button);
         buttonLA.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +152,9 @@ public class CustomAdapter extends BaseAdapter {
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
+
+
+
 
         return vi;
     }

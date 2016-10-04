@@ -45,7 +45,7 @@ public class MainActivity  extends AppCompatActivity{
     private ViewPager viewPager;
     private ViewPagerAdapter viewPagerAdapter;
     private BackPressCloseHandler backPressCloseHandler;
-
+    private TextView title_textview;
     private String mDeviceName;
     private String mDeviceAddress;
     private BluetoothLeService mBluetoothLeService;
@@ -77,17 +77,20 @@ public class MainActivity  extends AppCompatActivity{
         //뒤로가기 두번 = 종료 설정
         backPressCloseHandler = new BackPressCloseHandler(this);
 
+        title_textview = (TextView)findViewById(R.id.main_title);
+        Typeface font_gabia = Typeface.createFromAsset(this.getAssets(), "gabia_solmee.ttf");
+        title_textview.setTypeface(font_gabia);
 
         //기본 툴바, 레이아웃, 뷰페이저 설정
-        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        //toolbar = (Toolbar) findViewById(R.id.tool_bar);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         viewPager = (ViewPager) findViewById(R.id.pager);
 
 
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //setSupportActionBar(toolbar);
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
         //탭 추가

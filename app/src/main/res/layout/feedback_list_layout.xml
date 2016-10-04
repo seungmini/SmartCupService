@@ -5,36 +5,42 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:padding="10dp"
+    android:background="#00FF0000"
     android:textSize="15dp" >
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="2"
         android:text=""
+        android:textColor="#000000"
         android:id="@+id/feedback_text"/>
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="4"
+        android:popupBackground="#FFFFFF"
+        android:textColor="#000000"
         android:id="@+id/drink_spinner"/>
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="2"
+        android:popupBackground="#FFFFFF"
         android:entries="@array/number_of_drink"
         android:id="@+id/cc_spinner"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="11dp"
-        android:text="잔"/>
+        android:textColor="#000000"
+        android:text="비율"/>
 
     <ImageView
         android:layout_width="20dp"
         android:layout_height="wrap_content"
         android:id="@+id/image_button"
-        android:src="@drawable/minus_white_icon"
+        android:src="@drawable/minus_red_icon"
         android:clickable="true"
         android:layout_gravity="center"
         android:onClick="remove" />
