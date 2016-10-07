@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 
 import bluetoothLe.SampleGattAttributes;
+import datas.SCSDBManager;
 import kakaolinkage.KakaoLoginActivity;
 
 import java.io.File;
@@ -57,6 +58,7 @@ public class MainActivity  extends AppCompatActivity{
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     private final String LIST_NAME = "NAME";
     private final String LIST_UUID = "UUID";
+
 
 
     @Override
@@ -91,6 +93,13 @@ public class MainActivity  extends AppCompatActivity{
         viewPager.setAdapter(viewPagerAdapter);
         //setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        String db_path = getDatabasePath("abcde.db").getAbsolutePath();
+        File db = new File(db_path);
+        if(db.exists() != true){
+            SCSDBManager db_manager = new SCSDBManager(this, "abcde.db", null, 1);
+            db_manager.setData();
+        }
 
 
         //탭 추가
