@@ -80,7 +80,6 @@ public class SCSDBManager extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
     }
 
     public void executeQuery(String _query) {
@@ -101,6 +100,121 @@ public class SCSDBManager extends SQLiteOpenHelper {
         db.close();
     }
 
+    public boolean checkZero(double target) {
+        double epsilon = 0.000001;
+        return Math.abs(target) < epsilon;
+    }
+
+    public double getML() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cs;
+        String target_key = "-1";
+        double ml_soju = 0, ml_macj = 0, ml_mack = 0;
+        double sum = 0.0;
+
+        String query = "SELECT s_time, hangover FROM CUP ORDER BY s_time DESC";
+        cs = db.rawQuery(query,null);
+        cs.moveToFirst();
+
+        while(cs.moveToNext()) {
+            Log.d("SCSDBManager",cs.getString(0));
+            Log.d("SCSDBManager",cs.getString(1));
+            if(cs.getString(1).compareTo("-1") != 0)
+                continue;
+            else {
+                target_key = cs.getString(0);
+                break;
+            }
+        }
+
+        if(target_key.compareTo("-1") == 0) return sum;
+
+        Log.d("SCSDBManager", target_key);
+        query = "SELECT ml_soju, ml_macj, ml_mack from CUP where s_time = \"" + target_key + "\"";
+        cs = db.rawQuery(query,null);
+        cs.moveToFirst();
+
+        ml_soju = Integer.parseInt(cs.getString(0));
+        ml_macj = Integer.parseInt(cs.getString(1));
+        ml_mack = Integer.parseInt(cs.getString(2));
+
+        if(!checkZero(ml_soju)) {
+            String query_soju = "SELECT C1,GOOD_DAY,SOON_HARI,LIKE_FIRST,MT_HANRA FROM SOJU where time = \"" + target_key + "\"";
+            cs = db.rawQuery(query_soju,null);
+            cs.moveToFirst();
+            int soju_al = 18;
+            for(int i = 0;i < 5; i++) {
+                int temp = Integer.parseInt(cs.getString(i));
+
+                if (temp == 1) {
+                    if (i == 0) {
+                        soju_al = 21;
+                        break;
+                    } else if (i == 1) {
+                        soju_al = 17;
+                        break;
+                    } else if (i == 2) {
+                        soju_al = 14;
+                        break;
+                    } else if (i == 3) {
+                        soju_al = 18;
+                        break;
+                    } else if (i == 4) {
+                        soju_al = 22;
+                        break;
+                    }
+                }
+            }
+            ml_soju *= soju_al;
+        }
+
+        if(!checkZero(ml_macj)) {
+            String query_beer = "SELECT CASS, HITE, MAX, OB FROM BEER where time = \"" + target_key + "\"";
+            cs = db.rawQuery(query_beer,null);
+            cs.moveToFirst();
+            double macj_al = 5;
+            for(int i = 0;i < 4; i++) {
+                int temp = Integer.parseInt(cs.getString(i));
+
+                if (temp == 1) {
+                    if (i == 3) {
+                        macj_al = 4.8;
+                        break;
+                    } else {
+                        macj_al = 4.5;
+                        break;
+                    }
+                }
+            }
+            ml_macj *= macj_al;
+        }
+
+        // 0-6 1-8 2-6 3-6 4-6 5-6
+        if(!checkZero(ml_mack)) {
+            String query_makg = "SELECT GUKS, GEUM, NEUR, SAEN, SEOU, UGUK FROM MAKG where time = \"" + target_key + "\"";
+            cs = db.rawQuery(query_makg,null);
+            cs.moveToFirst();
+            double makg_al = 6;
+            for(int i = 0;i < 6; i++) {
+                int temp = Integer.parseInt(cs.getString(i));
+
+                if (temp == 1) {
+                    if (i == 1) {
+                        makg_al = 8.0;
+                        break;
+                    } else {
+                        makg_al = 6.0;
+                        break;
+                    }
+                }
+            }
+            ml_mack *= makg_al;
+        }
+        sum = ml_soju + ml_macj + ml_mack;
+        return sum;
+    }
+
+
     public String getLatestTime(){
         SQLiteDatabase db = getReadableDatabase();
         Cursor cs;
@@ -115,8 +229,6 @@ public class SCSDBManager extends SQLiteOpenHelper {
         else {
             return cs.getString(0);
         }
-
-
     }
 
 
