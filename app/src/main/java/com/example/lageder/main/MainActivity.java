@@ -11,6 +11,8 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -35,6 +37,8 @@ import kakaolinkage.KakaoLoginActivity;
 import tabview.DrinkPopupActivity;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,11 +79,24 @@ public class MainActivity  extends AppCompatActivity{
         //getAppKeyHash();
 
         //카톡 연동 체크
+        String temp_name = "사용자";
         if(name_file.exists() != true){
             Intent graph_intent = new Intent(getApplicationContext(), KakaoLoginActivity.class);
             startActivity(graph_intent);
         }
+        else{
+            try {
+                FileInputStream fis = new FileInputStream(name_file);
+                byte[] buffer = new byte[fis.available()];
+                fis.read(buffer);
+                temp_name = new String(buffer);
 
+                fis.close();
+            } catch (IOException e) {
+                Log.e("File", "에러=" + e);
+            }
+        }
+        final String name = temp_name;
         //뒤로가기 두번 = 종료 설정
         backPressCloseHandler = new BackPressCloseHandler(this);
 
@@ -87,11 +104,14 @@ public class MainActivity  extends AppCompatActivity{
         Typeface font_gabia = Typeface.createFromAsset(this.getAssets(), "gabia_solmee.ttf");
         title_textview.setTypeface(font_gabia);
 
+
+
         drink_imageview = (ImageView)findViewById(R.id.drink_image);
         drink_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent drink_popup_intent = new Intent(getApplicationContext(), DrinkPopupActivity.class);
+                drink_popup_intent.putExtra("name",name);
                 startActivity(drink_popup_intent);
 
             }

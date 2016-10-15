@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import android.content.Context;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ public class DrinkPopupActivity extends Activity {
     Typeface font_gabia,font_kover;
     TextView textview_pec,textview_sen,textview_title;
     ImageView imageview_cup;
+    String user_name;
     SCSDBManager db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,17 +59,23 @@ public class DrinkPopupActivity extends Activity {
         getWindow().getAttributes().width = width;
         getWindow().getAttributes().height = height;
 
-        setCupImage();
-        setCupPectage();
-        setSentence();
+        Intent intent = getIntent();
+        user_name = intent.getStringExtra("name");
+
+
+        int temp_alchol = 65;
+
+        setCupImage(temp_alchol);
+        setCupPectage(temp_alchol);
+        setSentence(temp_alchol);
     }
-    public void setCupImage(){
+    public void setCupImage(int input){
         int dc = db.getDC();
         /*
             통신으로 현재 받은 알콜량 필요
          */
-        int temp_alchol = 80;
-        int pectage = temp_alchol * 100 / dc ;
+        int alchol = input;
+        int pectage = alchol * 100 / dc ;
         if(pectage <12){
             imageview_cup.setImageResource(R.drawable.water_0);
         }
@@ -84,29 +92,29 @@ public class DrinkPopupActivity extends Activity {
             imageview_cup.setImageResource(R.drawable.water_99);
         }
     }
-    public void setCupPectage(){
+    public void setCupPectage(int input){
         int dc = db.getDC();
         /*
             통신으로 현재 받은 알콜량 필요
          */
-        int temp_alchol = 80;
-        int pectage = temp_alchol * 100 / dc ;
+        int alchol = input;
+        int pectage = alchol * 100 / dc ;
         textview_pec.setText(pectage + "%");
-        if(pectage >= 70){
+        if(pectage >= 80){
             textview_pec.setTextColor(Color.rgb(255,0,0));
         }
     }
-    public void setSentence(){
+    public void setSentence(int input){
         int dc = db.getDC();
         /*
             통신으로 현재 받은 알콜량 필요
          */
 
-        int temp_alchol = 80;
-        int pectage = temp_alchol * 100 / dc ;
+        int alchol = input;
+        int pectage = alchol * 100 / dc ;
         font_kover = Typeface.createFromAsset(getAssets(), "koverwatch.ttf");
 
-        String name = "<font color='#FF0000'>사용자</font>";
+        String name = "<font color='#FF0000'>"+user_name+"</font>";
         String liver = "<font color='#FF0000'>간</font>";
         String number = "<font color='#FF0000'>(+"+pectage+")</font>";
 

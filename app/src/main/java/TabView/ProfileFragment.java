@@ -1,6 +1,7 @@
 package tabview;
 
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -8,10 +9,15 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +29,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+
 public class ProfileFragment extends Fragment {
 
 
@@ -32,8 +39,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
-        SCSDBManager db = new SCSDBManager(getActivity(), "abcde.db", null, 1);
-
+        final SCSDBManager db = new SCSDBManager(getActivity(), "abcde.db", null, 1);
 
         name_textview = (TextView) v.findViewById(R.id.name_textview);
         soju_textview = (TextView)v.findViewById(R.id.most_soju);
@@ -59,6 +65,7 @@ public class ProfileFragment extends Fragment {
 
         String name_path = getActivity().getApplicationContext().getFilesDir().getAbsolutePath() + "/name.txt";
         String image_path = getActivity().getApplicationContext().getFilesDir().getAbsolutePath() + "/profile.jpg";
+
         File name_file = new File(name_path);
         File image_file = new File(image_path);
 
@@ -76,6 +83,53 @@ public class ProfileFragment extends Fragment {
             } catch (IOException e) {
                 Log.e("File", "에러=" + e);
             }
+        }
+
+        if(!db.checkDC()){
+            LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getContext());
+            View mView = layoutInflaterAndroid.inflate(R.layout.insert_dc_dialog, null);
+
+            AlertDialog.Builder sayWindows = new AlertDialog.Builder(getContext());
+            sayWindows.setView(mView);
+            sayWindows.setCancelable(false);
+
+            final EditText edittext_input = (EditText) mView.findViewById(R.id.userInputDialog);
+            final Button button_ok = (Button)mView.findViewById(R.id.dialog_ok);
+            final TextView textview_title = (TextView)mView.findViewById(R.id.dialogTitle);
+
+            Typeface font_gabia = Typeface.createFromAsset(getActivity().getAssets(), "gabia_solmee.ttf");
+            edittext_input.setTypeface(font_gabia);
+            button_ok.setTypeface(font_gabia);
+            textview_title.setTypeface(font_gabia);
+
+            edittext_input.setInputType(InputType.TYPE_CLASS_NUMBER |InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+            final AlertDialog mAlertDialog = sayWindows.create();
+            mAlertDialog.setCanceledOnTouchOutside(false);
+
+            mAlertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+                @Override
+                public void onShow(DialogInterface dialog) {
+
+
+
+                    button_ok.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View view) {
+                            String value = edittext_input.getText().toString();
+                            float float_dc = Float.parseFloat(value);
+                            int int_dc = (int)(float_dc * 60);
+                            db.executeQuery("insert into DC values("+int_dc+");");
+
+                            mAlertDialog.dismiss();
+                        }
+                    });
+                }
+            });
+           mAlertDialog.show();
+
 
         }
 
