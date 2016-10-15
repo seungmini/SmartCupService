@@ -39,7 +39,7 @@ public class GraphPopupActivity extends Activity {
 
         getWindow().setAttributes(layoutParams);
 
-        //requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.activity_graph_popup);
         //getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title);

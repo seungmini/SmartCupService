@@ -22,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 import bluetoothLe.SampleGattAttributes;
 import datas.SCSDBManager;
 import kakaolinkage.KakaoLoginActivity;
+import tabview.DrinkPopupActivity;
 
 import java.io.File;
 import java.security.MessageDigest;
@@ -59,12 +61,14 @@ public class MainActivity  extends AppCompatActivity{
     private final String LIST_NAME = "NAME";
     private final String LIST_UUID = "UUID";
 
-
+    private ImageView drink_imageview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         String name_path=getFilesDir(). getAbsolutePath()+"/name.txt";
         File name_file = new File(name_path);
@@ -82,6 +86,16 @@ public class MainActivity  extends AppCompatActivity{
         title_textview = (TextView)findViewById(R.id.main_title);
         Typeface font_gabia = Typeface.createFromAsset(this.getAssets(), "gabia_solmee.ttf");
         title_textview.setTypeface(font_gabia);
+
+        drink_imageview = (ImageView)findViewById(R.id.drink_image);
+        drink_imageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent drink_popup_intent = new Intent(getApplicationContext(), DrinkPopupActivity.class);
+                startActivity(drink_popup_intent);
+
+            }
+        });
 
         //기본 툴바, 레이아웃, 뷰페이저 설정
         //toolbar = (Toolbar) findViewById(R.id.tool_bar);

@@ -12,6 +12,8 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ public class SCSDBManager extends SQLiteOpenHelper {
         // 새로운 테이블을 생성한다.
         // create table 테이블명 (컬럼명 타입 옵션);
         db.execSQL("CREATE TABLE IF NOT EXISTS SOJU (" +
-                "sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL," +
+                "s_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL," +
                 "C1 integer default 0,"+
                 "GOOD_DAY integer default 0,"+
                 "SOON_HARI integer default 0,"+
@@ -45,7 +47,7 @@ public class SCSDBManager extends SQLiteOpenHelper {
                 " );");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS BEER (" +
-                "sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL," +
+                "s_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL," +
                 "CASS integer default 0,"+
                 "HITE integer default 0,"+
                 "MAX integer default 0,"+
@@ -54,7 +56,7 @@ public class SCSDBManager extends SQLiteOpenHelper {
 
 
         db.execSQL("CREATE TABLE IF NOT EXISTS MAKG (" +
-                "sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL," +
+                "s_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL," +
                 "GUKS integer default 0,"+
                 "GEUM integer default 0,"+
                 "NEUR integer default 0,"+
@@ -65,15 +67,19 @@ public class SCSDBManager extends SQLiteOpenHelper {
 
         db.execSQL(
                 "CREATE TABLE IF NOT EXISTS CUP (" +
-                        "s_time TIMESTAMP NOT NULL, " +
-                        "f_time TIMESTAMP NOT NULL, " +
-                        "ml_soju integer DEFAULT 0, " +
-                        "ml_macj integer DEFAULT 0, " +
-                        "ml_mack integer DEFAULT 0, " +
-                        "hangover integer DEFAULT 0, " +
-                        "PRIMARY KEY(s_time));"
+                "s_time TIMESTAMP NOT NULL, " +
+                "f_time TIMESTAMP NOT NULL, " +
+                "ml_soju integer DEFAULT 0, " +
+                "ml_macj integer DEFAULT 0, " +
+                "ml_mack integer DEFAULT 0, " +
+                "hangover integer DEFAULT 0, " +
+                "PRIMARY KEY(s_time));"
         );
 
+        db.execSQL(
+                "CREATE TABLE IF NOT EXISTS DC (" +
+                "user_dc integer DEFAULT 0);"
+        );
     }
     // IF NOT EXISTS
 
@@ -104,115 +110,192 @@ public class SCSDBManager extends SQLiteOpenHelper {
         return Math.abs(target) < epsilon;
     }
 
-    public double getML() {
+    public int getDC() {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cs;
-        String target_key = "-1";
-        double ml_soju = 0, ml_macj = 0, ml_mack = 0;
-        double sum = 0.0;
+        Cursor cs,cs_soju,cs_beer,cs_makg;
 
-        String query = "SELECT s_time, hangover FROM CUP ORDER BY s_time DESC";
+        String query = "SELECT s_time, ml_soju, ml_macj, ml_mack, hangover FROM CUP";
+
         cs = db.rawQuery(query,null);
-        cs.moveToFirst();
 
+        int record_num = cs.getCount();
+        int[][] record = new int[record_num][2];
+
+        int record_count = 0;
         while(cs.moveToNext()) {
-            Log.d("SCSDBManager",cs.getString(0));
-            Log.d("SCSDBManager",cs.getString(1));
-            if(cs.getString(1).compareTo("-1") != 0)
-                continue;
-            else {
-                target_key = cs.getString(0);
-                break;
+
+            String s_time = cs.getString(0);
+
+            double ml_soju = cs.getInt(1);
+            double ml_beer = cs.getInt(2);
+            double ml_makg = cs.getInt(3);
+            double al_soju = 0, al_beer = 0, al_makg = 0;
+
+            if(cs.getInt(1) > 0){//소주마심
+                String query_brand = "SELECT * from SOJU where s_time = '"+ s_time + "'";
+                cs_soju = db.rawQuery(query_brand,null);
+                cs_soju.moveToFirst();
+                if(cs_soju.getCount() == 0){//no feedback
+                    al_soju = ml_soju * 0.17;
+                }
+                else{
+                    double sum = cs_soju.getInt(1)+cs_soju.getInt(2) +cs_soju.getInt(3)+cs_soju.getInt(4)+cs_soju.getInt(5);
+                    al_soju = ml_soju * cs_soju.getInt(1)/sum  * 0.19  + ml_soju * cs_soju.getInt(2)/sum * 0.169 + ml_soju * cs_soju.getInt(3)/sum * 0.14+ ml_soju * cs_soju.getInt(4)/sum* 0.175 + ml_soju * cs_soju.getInt(5)/sum* 0.21;
+                }
             }
+            if(cs.getInt(2) > 0){//맥주 마심
+                String query_brand = "SELECT * from BEER where s_time = '"+ s_time + "'";
+                cs_beer = db.rawQuery(query_brand,null);
+                cs_beer.moveToFirst();
+                if(cs_beer.getCount() == 0){//no feedback
+                    al_beer = ml_beer * 0.045;
+                }
+                else{
+                    double sum = cs_beer.getInt(1) + cs_beer.getInt(2) + cs_beer.getInt(3) + cs_beer.getInt(4);
+                    al_beer = ml_beer * cs_beer.getInt(1)/sum  * 0.045  + ml_beer * cs_beer.getInt(2)/sum * 0.045 + ml_beer * cs_beer.getInt(3)/sum * 0.045+ ml_beer * cs_beer.getInt(4)/sum* 0.048;
+                }
+            }
+            if(cs.getInt(3) > 0){//막걸리 마심
+                String query_brand = "SELECT * from MAKG where s_time = '"+ s_time + "'";
+                cs_makg = db.rawQuery(query_brand,null);
+                cs_makg.moveToFirst();
+                if(cs_makg.getCount() == 0){//no feedback
+                    al_makg = ml_makg * 0.06;
+                }
+                else{
+                    double sum = cs_makg.getInt(1)+cs_makg.getInt(2) +cs_makg.getInt(3)+cs_makg.getInt(4)+cs_makg.getInt(5)+cs_makg.getInt(6);
+                    al_makg = ml_makg * cs_makg.getInt(1)/sum  * 0.06  + ml_makg * cs_makg.getInt(2)/sum * 0.08 + ml_makg * cs_makg.getInt(3)/sum * 0.06+ ml_makg * cs_makg.getInt(4)/sum* 0.06 + ml_makg * cs_makg.getInt(5)/sum* 0.06 + ml_makg * cs_makg.getInt(6)/sum* 0.06;
+                }
+            }
+            int hangover_day = cs.getInt(4);
+            record[record_count][0] = (int)(al_soju + al_beer + al_makg);
+            record[record_count][1] = hangover_day;
+
+            record_count++;
+
+        }
+////////////////모든 값 배열에 넣음
+
+
+
+        int max = 0;//괜찮았을때중 최대
+        int min = 10000;//안괜찮았을떄중 최소
+        int sum_all = 0;
+        int record_distance = 0;
+
+        for(int i = 0 ; i < record_num ; i++){
+
+            if(record[i][1] == -1){// 안취
+                if( max < record[i][0]){
+                    max = record[i][0];
+                }
+                record_distance++;
+            }
+            else if(record[i][1] == 1){//취
+                if(min > record[i][0]){
+                    min = record[i][0];
+                }
+                record_distance++;
+            }
+            sum_all += record[i][0];
+        }
+/////////////////////최대, 최소 계산
+
+        int average_all = sum_all/record_num;//이사람 평균적으로 얼마 마시는지
+
+
+        int dc_distance = 0;
+
+        if(average_all <= 45){// 0.5 내외
+            dc_distance = 30;
+        }
+        else if(average_all <= 75){//1.0 내외
+            dc_distance = 60;
+        }
+        else if(average_all <= 105){//1.5 내외
+            dc_distance = 90;
+        }
+        else if(average_all <= 135){//2.0 내외
+            dc_distance = 120;
+        }
+        else{
+            dc_distance = 150;
         }
 
-        if(target_key.compareTo("-1") == 0) return sum;
 
-        Log.d("SCSDBManager", target_key);
-        query = "SELECT ml_soju, ml_macj, ml_mack from CUP where s_time = \"" + target_key + "\"";
-        cs = db.rawQuery(query,null);
-        cs.moveToFirst();
+        int calculated_dc = 0;
 
-        ml_soju = Integer.parseInt(cs.getString(0));
-        ml_macj = Integer.parseInt(cs.getString(1));
-        ml_mack = Integer.parseInt(cs.getString(2));
+        if(record_distance <= 5 || max- min >= dc_distance){// 자료 부족
+            Cursor cs_dc;
+            String query_dc = "SELECT user_dc FROM DC";
+            cs_dc = db.rawQuery(query_dc,null);
+            calculated_dc = cs.getInt(0);
+        }
+        else {
+            int[][] record_dc = new int[record_distance][2];
 
-        if(!checkZero(ml_soju)) {
-            String query_soju = "SELECT C1,GOOD_DAY,SOON_HARI,LIKE_FIRST,MT_HANRA FROM SOJU where time = \"" + target_key + "\"";
-            cs = db.rawQuery(query_soju,null);
-            cs.moveToFirst();
-            int soju_al = 18;
-            for(int i = 0;i < 5; i++) {
-                int temp = Integer.parseInt(cs.getString(i));
+            int dc_i = 0;
+            for (int i = 0; i < cs.getCount(); i++) {
+                if (record[i][0] >= min && record[i][0] <= max) {
 
-                if (temp == 1) {
-                    if (i == 0) {
-                        soju_al = 21;
-                        break;
-                    } else if (i == 1) {
-                        soju_al = 17;
-                        break;
-                    } else if (i == 2) {
-                        soju_al = 14;
-                        break;
-                    } else if (i == 3) {
-                        soju_al = 18;
-                        break;
-                    } else if (i == 4) {
-                        soju_al = 22;
-                        break;
+                    record_dc[dc_i][0] = record[i][0];
+                    record_dc[dc_i][1] = record[i][1];
+                    dc_i++;
+                }
+            }
+            //따로 배열만듬
+
+
+            for (int i = record_distance; i >= 0; i--) {
+                for (int k = 0; k < i - 1; k++) {
+                    if (record_dc[k][0] > record_dc[k + 1][0]) {
+                        int temp_ml, temp_hangover;
+                        temp_ml = record_dc[k + 1][0];
+                        temp_hangover = record_dc[k + 1][1];
+                        record_dc[k + 1][0] = record_dc[k][0];
+                        record_dc[k + 1][1] = record_dc[k][1];
+
+                        record_dc[k][0] = temp_ml;
+                        record_dc[k][1] = temp_hangover;
                     }
                 }
             }
-            ml_soju *= soju_al;
-        }
+            ////정렬 끝
 
-        if(!checkZero(ml_macj)) {
-            String query_beer = "SELECT CASS, HITE, MAX, OB FROM BEER where time = \"" + target_key + "\"";
-            cs = db.rawQuery(query_beer,null);
-            cs.moveToFirst();
-            double macj_al = 5;
-            for(int i = 0;i < 4; i++) {
-                int temp = Integer.parseInt(cs.getString(i));
-
-                if (temp == 1) {
-                    if (i == 3) {
-                        macj_al = 4.8;
-                        break;
-                    } else {
-                        macj_al = 4.5;
-                        break;
+            int standard = -1;
+            for (int i = 1; i < record_distance; i++) {
+                int hangover_yes = 0, hangover_no = 0;
+                for (int k = 0; k < i; k++) {
+                    if (record_dc[k][1] == 1) {
+                        hangover_yes++;
                     }
                 }
-            }
-            ml_macj *= macj_al;
-        }
-
-        // 0-6 1-8 2-6 3-6 4-6 5-6
-        if(!checkZero(ml_mack)) {
-            String query_makg = "SELECT GUKS, GEUM, NEUR, SAEN, SEOU, UGUK FROM MAKG where time = \"" + target_key + "\"";
-            cs = db.rawQuery(query_makg,null);
-            cs.moveToFirst();
-            double makg_al = 6;
-            for(int i = 0;i < 6; i++) {
-                int temp = Integer.parseInt(cs.getString(i));
-
-                if (temp == 1) {
-                    if (i == 1) {
-                        makg_al = 8.0;
-                        break;
-                    } else {
-                        makg_al = 6.0;
-                        break;
+                for (int k = i; k < record_distance; k++) {
+                    if (record_dc[k][1] == -1) {
+                        hangover_no++;
                     }
                 }
+                if (hangover_yes == hangover_no && hangover_yes != 0) {
+                    standard = i;
+                }
             }
-            ml_mack *= makg_al;
+            calculated_dc = record_dc[standard - 1][0];
         }
-        sum = ml_soju + ml_macj + ml_mack;
-        return sum;
+
+
+        return calculated_dc;
     }
 
+    public boolean checkDC(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cs_dc;
+        String query_dc = "SELECT user_dc FROM DC";
+        cs_dc = db.rawQuery(query_dc,null);
+        if(cs_dc.getCount() == 0){
+            return false;
+        }
+        return true;
+    }
 
     public String getLatestTime(){
         SQLiteDatabase db = getReadableDatabase();
@@ -801,7 +884,7 @@ public class SCSDBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         String[] query_cup = new String[]{
                 "insert into CUP values('2016-04-01 20:33:00','2016-04-02 00:25:00',820,0,0,1);",
-                "insert into CUP values('2016-04-02 19:40:00','2016-04-02 22:11:00',460,570,0,-1);",
+                "insert into CUP values('2016-04-02 19:40:00','2016-04-02 22:11:00',460,570,0,1);",
                 "insert into CUP values('2016-04-05 22:10:00','2016-04-06 00:07:00',540,0,0,1);",
                 "insert into CUP values('2016-04-08 21:52:00','2016-04-08 23:52:00',0,1530,0,-1);",
                 "insert into CUP values('2016-04-09 22:40:00','2016-04-10 00:48:00',670,0,0,1);",
@@ -909,7 +992,6 @@ public class SCSDBManager extends SQLiteOpenHelper {
         for(int i = 0 ; i < query_makg.length ;i++) {
             db.execSQL(query_makg[i]);
         }
-
     }
 
 }
