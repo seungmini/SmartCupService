@@ -348,6 +348,10 @@ public class MainActivity  extends AppCompatActivity{
                     String s = "";
                     /*s = svText.getText().toString();*/
                     s += "Rx: " + intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
+
+                    for(int i = 0 ;i < intent.getStringExtra(BluetoothLeService.EXTRA_DATA).length(); i++) {
+                        Log.d("RACommunication : ", intent.getStringExtra(BluetoothLeService.EXTRA_DATA).charAt(i) + "is value");
+                    }
                     /*svText.setMovementMethod(new ScrollingMovementMethod());*/
                     /*svText.setText(s + "\r\n");*/
                 }
@@ -355,6 +359,11 @@ public class MainActivity  extends AppCompatActivity{
             }
         }
     };
+
+    public void disconnect_ble() {
+        unbindService(mServiceConnection);
+        mBluetoothLeService = null;
+    }
 
 /*    private void displayData(String data) {
         if (data != null) {

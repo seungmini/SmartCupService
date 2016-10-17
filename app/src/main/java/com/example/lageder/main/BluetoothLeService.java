@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.UUID;
@@ -403,6 +404,7 @@ public class BluetoothLeService extends Service {
             return;
         }
         mBluetoothGatt.disconnect();
+        Toast.makeText(getApplication(), "Disconnect." , Toast.LENGTH_SHORT).show();
     }
 
     /**

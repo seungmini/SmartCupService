@@ -139,7 +139,7 @@ public class GraphFragment extends Fragment {
     }
     public void makeMonthGraph(){
 
-        SCSDBManager db = new SCSDBManager(getActivity(), "Sample.db", null, 1);
+        SCSDBManager db = new SCSDBManager(getActivity(), "abcde.db", null, 1);
         Typeface font_gabia = Typeface.createFromAsset(getActivity().getAssets(), "gabia_solmee.ttf");
 
         BarData data = new BarData(getXLabel_month(), db.getDataSet_month());
