@@ -46,6 +46,7 @@ import java.util.List;
 
 public class MainActivity  extends AppCompatActivity{
     private final static String TAG = MainActivity.class.getSimpleName();
+    private boolean isBind = false;
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
@@ -252,6 +253,7 @@ public class MainActivity  extends AppCompatActivity{
             // Automatically connects to the device upon successful start-up initialization.
             Log.e("ActivityResult","I am copying");
             mBluetoothLeService.connect(mDeviceAddress);
+            isBind = true;
             //Log.e("ActivityResult","Work done with " + mBluetoothLeService.connect(mDeviceAddress));
             Toast.makeText(getApplicationContext(), "Connect!", Toast.LENGTH_SHORT).show();
             //Log.d(TAG, "Connect request result=" + mBluetoothLeService.connect(mDeviceAddress));
@@ -260,6 +262,7 @@ public class MainActivity  extends AppCompatActivity{
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
             Log.e("ActivityResult","It was null");
+            isBind = false;
             mBluetoothLeService = null;
         }
     };
@@ -292,8 +295,11 @@ public class MainActivity  extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbindService(mServiceConnection);
-        mBluetoothLeService = null;
+        if(mConnected) {
+            unbindService(mServiceConnection);
+            mBluetoothLeService = null;
+            Log.e("RA","Disconnect completed");
+        }
     }
 
     // Handles various events fired by the Service.
