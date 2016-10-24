@@ -7,25 +7,37 @@ package tabview;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lageder.main.MainActivity;
 import com.example.lageder.main.R;
 
-import bluetoothLe.DevicePopupActivity;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-/**
- * Created by Ferdousur Rahman Shajib on 27-10-2015.
- */
+import bluetoothLe.DevicePopupActivity;
+import datas.SCSDBManager;
+
 public class StatusFragment extends Fragment {
     Activity activity;
     private Switch swc;
+    private Button sms_btn;
+    private Button phone_btn;
+
+    private final int REQUEST_BLE = 1;
+
+    private TextView svText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,20 +49,37 @@ public class StatusFragment extends Fragment {
         swc.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton cb, boolean isChecking) {
                 String str = String.valueOf(isChecking);
-
                 if(isChecking) {
                     Intent intent = new Intent(activity, DevicePopupActivity.class);
-                    activity.startActivityForResult(intent,1);
+                    activity.startActivityForResult(intent,REQUEST_BLE);
                     Toast.makeText(activity.getApplication(), "Try to connect..", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(activity.getApplication(), "Disconnect." , Toast.LENGTH_SHORT).show();
+                    MainActivity myActivity = (MainActivity) getActivity();
+                    myActivity.disconnect_ble();
                 }
-
             }
         });
 
+        phone_btn = (Button)v.findViewById(R.id.phone_btn);
+        phone_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //SCSDBManager db = new SCSDBManager(getActivity(), "bcdef.db", null, 1);
+                //Log.d("RA","value is " + db.getML());
+                long time = System.currentTimeMillis();
+                SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                String end_time = dayTime.format(new Date(time));
+                Log.e("RAcommunication", "" + end_time);
+            }
+        });
+
+        svText = (TextView) v.findViewById(R.id.svText);
         return v;
+    }
+
+    public void changeText(String target) {
+        svText.setText(target);
     }
 
 }

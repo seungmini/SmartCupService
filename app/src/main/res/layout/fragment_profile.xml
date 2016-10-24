@@ -32,6 +32,34 @@
                 android:layout_marginTop="20dp"
                 android:layout_gravity="center"
                 android:textColor="#000000" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                tools:layout_width="wrap_content"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:text="오늘 이거 한잔 하시죠!"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/recommend_tv"
+                    android:textColor="#000000"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:textSize="20dp" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    circular:srcCompat="@drawable/beer_line"
+                    android:background="@android:color/transparent"
+                    android:id="@+id/imageButton"
+                    android:layout_gravity="center"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout

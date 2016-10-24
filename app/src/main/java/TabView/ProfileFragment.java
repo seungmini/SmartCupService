@@ -18,9 +18,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.lageder.main.MainActivity;
 import com.example.lageder.main.R;
 import datas.SCSDBManager;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -31,11 +34,11 @@ import java.io.IOException;
 
 
 public class ProfileFragment extends Fragment {
-
-
-    public static TextView name_textview,soju_textview,makg_textview,beer_textview, time_textview, time_result_textview, day_textview, day_result_textview, brand_textview;
+    public static TextView name_textview,soju_textview,makg_textview,beer_textview, time_textview, time_result_textview, day_textview, day_result_textview, brand_textview,recommend_textview;
     public static ImageView profile_imagview;
     public static CircularImageView circular_imageview;
+    public static ImageButton image_btn;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
@@ -45,6 +48,7 @@ public class ProfileFragment extends Fragment {
         soju_textview = (TextView)v.findViewById(R.id.most_soju);
         beer_textview = (TextView)v.findViewById(R.id.most_beer);
         makg_textview = (TextView)v.findViewById(R.id.most_makg);
+        recommend_textview = (TextView)v.findViewById(R.id.recommend_tv);
 
 
         time_textview = (TextView)v.findViewById(R.id.lastest_time);
@@ -101,6 +105,7 @@ public class ProfileFragment extends Fragment {
             edittext_input.setTypeface(font_gabia);
             button_ok.setTypeface(font_gabia);
             textview_title.setTypeface(font_gabia);
+            recommend_textview.setTypeface(font_gabia);
 
             edittext_input.setInputType(InputType.TYPE_CLASS_NUMBER |InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
@@ -152,6 +157,15 @@ public class ProfileFragment extends Fragment {
         day_result_textview.setTypeface(font_gabia);
         brand_textview.setTypeface(font_gabia);
 
+        image_btn = (ImageButton)v.findViewById(R.id.imageButton);
+        image_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String location = "";
+                MainActivity myActivity = (MainActivity) getActivity();
+                myActivity.checkPermission();
+            }
+        });
 
         return v;
     }

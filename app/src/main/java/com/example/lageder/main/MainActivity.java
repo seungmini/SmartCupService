@@ -1,5 +1,6 @@
 package com.example.lageder.main;
 
+import android.Manifest;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
@@ -15,6 +16,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -40,15 +43,19 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity  extends AppCompatActivity{
     private final static String TAG = MainActivity.class.getSimpleName();
-    private boolean isBind = false;
+    private static final int MY_PERMISSION_REQUEST_STORAGE = 1;
 
-    private Toolbar toolbar;
+    private GPSTracker gps;
+    private String start_time;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter viewPagerAdapter;
@@ -67,13 +74,15 @@ public class MainActivity  extends AppCompatActivity{
     private final String LIST_UUID = "UUID";
 
     private ImageView drink_imageview;
+    private int total_al_value;
+    private String al_kind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        total_al_value = 0;
 
         String name_path=getFilesDir(). getAbsolutePath()+"/name.txt";
         File name_file = new File(name_path);
@@ -97,6 +106,7 @@ public class MainActivity  extends AppCompatActivity{
                 Log.e("File", "에러=" + e);
             }
         }
+
         final String name = temp_name;
         //뒤로가기 두번 = 종료 설정
         backPressCloseHandler = new BackPressCloseHandler(this);
@@ -105,8 +115,6 @@ public class MainActivity  extends AppCompatActivity{
         Typeface font_gabia = Typeface.createFromAsset(this.getAssets(), "gabia_solmee.ttf");
         title_textview.setTypeface(font_gabia);
 
-
-
         drink_imageview = (ImageView)findViewById(R.id.drink_image);
         drink_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +122,6 @@ public class MainActivity  extends AppCompatActivity{
                 Intent drink_popup_intent = new Intent(getApplicationContext(), DrinkPopupActivity.class);
                 drink_popup_intent.putExtra("name",name);
                 startActivity(drink_popup_intent);
-
             }
         });
 
@@ -253,7 +260,6 @@ public class MainActivity  extends AppCompatActivity{
             // Automatically connects to the device upon successful start-up initialization.
             Log.e("ActivityResult","I am copying");
             mBluetoothLeService.connect(mDeviceAddress);
-            isBind = true;
             //Log.e("ActivityResult","Work done with " + mBluetoothLeService.connect(mDeviceAddress));
             Toast.makeText(getApplicationContext(), "Connect!", Toast.LENGTH_SHORT).show();
             //Log.d(TAG, "Connect request result=" + mBluetoothLeService.connect(mDeviceAddress));
@@ -262,7 +268,6 @@ public class MainActivity  extends AppCompatActivity{
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
             Log.e("ActivityResult","It was null");
-            isBind = false;
             mBluetoothLeService = null;
         }
     };
@@ -314,14 +319,35 @@ public class MainActivity  extends AppCompatActivity{
             final String action = intent.getAction();
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 mConnected = true;
-                /*updateConnectionState(R.string.connected);
-                invalidateOptionsMenu();*/
+                long time = System.currentTimeMillis();
+
+                SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                start_time = dayTime.format(new Date(time));
+
+
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
                 Log.d(TAG, "======= Disconnected ");
-                /*updateConnectionState(R.string.disconnected);
-                invalidateOptionsMenu();
-                clearUI();*/
+                long time = System.currentTimeMillis();
+                SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                String end_time = dayTime.format(new Date(time));
+                SCSDBManager sj_manager = new SCSDBManager(getApplicationContext(), "bcdef.db", null, 1);
+                if(start_time != "") {
+                    if(al_kind.compareTo("S") == 0) {
+                        String query = "insert into CUP values ('" + start_time + "','" + end_time + "'," + total_al_value + "," + 0 + "," + 0 + "," + 0 + ")";
+                        sj_manager.executeQuery(query);
+                    }
+                    else if(al_kind.compareTo("B") == 0) {
+                        String query = "insert into CUP values ('" + start_time + "','" + end_time + "'," + 0 + "," + total_al_value + "," + 0 + "," + 0 + ")";
+                        sj_manager.executeQuery(query);
+                    }
+                    else if(al_kind.compareTo("M") == 0) {
+                        String query = "insert into CUP values ('" + start_time + "','" + end_time + "'," + 0 + "," + 0 + "," + total_al_value + "," + 0 + ")";
+                        sj_manager.executeQuery(query);
+                    }
+                    start_time = "";
+                }
+
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.
                 displayGattServices(mBluetoothLeService.getSupportedGattServices());
@@ -331,7 +357,6 @@ public class MainActivity  extends AppCompatActivity{
                 byte[] sendByte = intent.getByteArrayExtra("init");
                 if ((sendByte[0] == 0x55) && (sendByte[1] == 0x33)) {
                     Log.d(TAG, "======= Init Setting Data ");
-                    /*updateCommandState("Init Data");*/
 
                     Handler mHandler = new Handler();
                     mHandler.postDelayed(new Runnable() {
@@ -347,21 +372,26 @@ public class MainActivity  extends AppCompatActivity{
 
                 if ((sendByte[0] == 0x55) && (sendByte[1] == 0x03)) {
                     Log.d(TAG, "======= SPP READ NOTIFY ");
-                    /*updateCommandState("SPP READ");*/
-
-                    byte notifyValue = sendByte[2];
 
                     String s = "";
-                    /*s = svText.getText().toString();*/
-                    s += "Rx: " + intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
+                    s += intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
+                    Log.e("Lageder",s + "is the value");
 
-                    for(int i = 0 ;i < intent.getStringExtra(BluetoothLeService.EXTRA_DATA).length(); i++) {
-                        Log.d("RACommunication : ", intent.getStringExtra(BluetoothLeService.EXTRA_DATA).charAt(i) + "is value");
+                    String al_value = "";
+                    String[] data = s.split(" ");
+                    al_kind = "";
+                    for(int i = 0;i<data.length;i++) {
+                        //Log.e("Lageder","data[" + i + "] : " + data[i]);
+                        int decimal = Integer.parseInt(data[i], 16);
+                        if(i == 0) {
+                            al_kind += (char)decimal;
+                            Log.e("Lageder","data[" + i + "] : " + al_kind);
+                        }
+                        else
+                            al_value += (char)decimal;
                     }
-                    /*svText.setMovementMethod(new ScrollingMovementMethod());*/
-                    /*svText.setText(s + "\r\n");*/
+                    total_al_value += Integer.parseInt(al_value);
                 }
-                //displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
             }
         }
     };
@@ -370,12 +400,6 @@ public class MainActivity  extends AppCompatActivity{
         unbindService(mServiceConnection);
         mBluetoothLeService = null;
     }
-
-/*    private void displayData(String data) {
-        if (data != null) {
-            mDataField.setText(data);
-        }
-    }*/
 
     // Demonstrates how to iterate through the supported GATT Services/Characteristics.
     // In this sample, we populate the data structure that is bound to the ExpandableListView
@@ -448,5 +472,94 @@ public class MainActivity  extends AppCompatActivity{
         }
     }
 
+    public void checkPermission() {
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED ||
+                checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
 
+            // Should we show an explanation?
+            if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                // Explain to the user why we need to write the permission.
+                //Toast.makeText(this, "Access Fine Location and Access Coarse Location", Toast.LENGTH_SHORT).show();
+            }
+
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                    MY_PERMISSION_REQUEST_STORAGE);
+
+            //Toast.makeText(getApplicationContext(), "권한이 인가되었습니다.", Toast.LENGTH_LONG).show();
+            // MY_PERMISSION_REQUEST_STORAGE is an
+            // app-defined int constant
+
+        } else {
+            // 다음 부분은 항상 허용일 경우에 해당이 됩니다.
+            // Do my method
+            do_gps();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSION_REQUEST_STORAGE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                        grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! do the
+                    // calendar task you need to do.
+
+                    // Do my method
+                    do_gps();
+                    Log.d("RACommunication", "Permission always be granted");
+
+                } else {
+
+                    Log.d("RACommunication", "Permission always deny");
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                break;
+        }
+    }
+
+    private void do_gps() {
+        gps = new GPSTracker(MainActivity.this);
+        // check if GPS enabled
+        if(gps.canGetLocation()) {
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+
+            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+
+            List<Address> addresses = null;
+            try {
+                addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            String cityName = addresses.get(0).getAdminArea();
+            if(cityName.compareTo("부산광역시") == 0) {
+                Toast.makeText(getApplicationContext(), cityName + "의 추천 술은 C1입니다.", Toast.LENGTH_LONG).show();
+            }
+            else if(cityName.compareTo("서울특별시") == 0)
+
+            // \n is for new line
+            //Toast.makeText(getApplicationContext(), "Your Location is - \n City name: " + cityName, Toast.LENGTH_LONG).show();
+        }else{
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            // gps.showSettingsAlert();
+        }
+    }
+
+}
+
+class ExtendThread extends Thread {
+    public void run() {
+        long time = System.currentTimeMillis();
+        while((System.currentTimeMillis() - time) / (1000 * 60) < 60) {;}
+        Log.e("RAcommunication", "외쳐 EE!!!");
+    }
 }
