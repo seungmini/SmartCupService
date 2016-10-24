@@ -543,7 +543,7 @@ public class MainActivity  extends AppCompatActivity{
                 Toast.makeText(getApplicationContext(), cityName + "의 추천 술은 C1입니다.", Toast.LENGTH_LONG).show();
             }
             else if(cityName.compareTo("서울특별시") == 0) {
-                
+
             }
 
             // \n is for new line

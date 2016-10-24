@@ -61,7 +61,7 @@ public class StatusFragment extends Fragment {
             }
         });
 
-        phone_btn = (Button)v.findViewById(R.id.phone_btn);
+/*        phone_btn = (Button)v.findViewById(R.id.phone_btn);
         phone_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,14 +72,8 @@ public class StatusFragment extends Fragment {
                 String end_time = dayTime.format(new Date(time));
                 Log.e("RAcommunication", "" + end_time);
             }
-        });
-
-        svText = (TextView) v.findViewById(R.id.svText);
+        });*/
         return v;
-    }
-
-    public void changeText(String target) {
-        svText.setText(target);
     }
 
 }
