@@ -542,7 +542,9 @@ public class MainActivity  extends AppCompatActivity{
             if(cityName.compareTo("부산광역시") == 0) {
                 Toast.makeText(getApplicationContext(), cityName + "의 추천 술은 C1입니다.", Toast.LENGTH_LONG).show();
             }
-            else if(cityName.compareTo("서울특별시") == 0)
+            else if(cityName.compareTo("서울특별시") == 0) {
+                
+            }
 
             // \n is for new line
             //Toast.makeText(getApplicationContext(), "Your Location is - \n City name: " + cityName, Toast.LENGTH_LONG).show();
