@@ -62,19 +62,13 @@ public class DrinkPopupActivity extends Activity {
         Intent intent = getIntent();
         user_name = intent.getStringExtra("name");
 
-
-        int temp_alchol = 65;
-
-        setCupImage(temp_alchol);
-        setCupPectage(temp_alchol);
-        setSentence(temp_alchol);
+        setCupImage();
+        setCupPectage();
+        setSentence();
     }
-    public void setCupImage(int input){
+    public void setCupImage(){
         int dc = db.getDC();
-        /*
-            통신으로 현재 받은 알콜량 필요
-         */
-        int alchol = input;
+        int alchol = db.get_current_DC();
         int pectage = alchol * 100 / dc ;
         if(pectage <12){
             imageview_cup.setImageResource(R.drawable.water_0);
@@ -92,25 +86,18 @@ public class DrinkPopupActivity extends Activity {
             imageview_cup.setImageResource(R.drawable.water_99);
         }
     }
-    public void setCupPectage(int input){
+    public void setCupPectage(){
         int dc = db.getDC();
-        /*
-            통신으로 현재 받은 알콜량 필요
-         */
-        int alchol = input;
+        int alchol = db.get_current_DC();
         int pectage = alchol * 100 / dc ;
         textview_pec.setText(pectage + "%");
         if(pectage >= 80){
             textview_pec.setTextColor(Color.rgb(255,0,0));
         }
     }
-    public void setSentence(int input){
+    public void setSentence(){
         int dc = db.getDC();
-        /*
-            통신으로 현재 받은 알콜량 필요
-         */
-
-        int alchol = input;
+        int alchol = db.get_current_DC();
         int pectage = alchol * 100 / dc ;
         font_kover = Typeface.createFromAsset(getAssets(), "koverwatch.ttf");
 

@@ -78,8 +78,11 @@ public class SCSDBManager extends SQLiteOpenHelper {
 
         db.execSQL(
                 "CREATE TABLE IF NOT EXISTS DC (" +
+                "ID int NOT NULL UNIQUE, " +
                 "user_dc integer DEFAULT 0);"
         );
+
+        db.execSQL("INSERT INTO DC VALUES (1,0);");
     }
     // IF NOT EXISTS
 
@@ -108,6 +111,19 @@ public class SCSDBManager extends SQLiteOpenHelper {
     public boolean checkZero(double target) {
         double epsilon = 0.000001;
         return Math.abs(target) < epsilon;
+    }
+
+    public int get_current_DC() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cs;
+
+        String query = "SELECT user_dc FROM DC";
+
+        cs = db.rawQuery(query,null);
+        cs.moveToFirst();
+
+        int ret = cs.getInt(1);
+        return ret;
     }
 
     public int getDC() {

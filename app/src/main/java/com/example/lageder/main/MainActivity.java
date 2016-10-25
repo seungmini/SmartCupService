@@ -324,6 +324,9 @@ public class MainActivity  extends AppCompatActivity{
                 SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 start_time = dayTime.format(new Date(time));
 
+                SCSDBManager sj_manager = new SCSDBManager(getApplicationContext(), "bcdef.db", null, 1);
+                String query_update = "UPDATE DC SET user_dc = " + 0;
+                sj_manager.executeQuery(query_update);
 
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
@@ -391,6 +394,9 @@ public class MainActivity  extends AppCompatActivity{
                             al_value += (char)decimal;
                     }
                     total_al_value += Integer.parseInt(al_value);
+                    SCSDBManager sj_manager = new SCSDBManager(getApplicationContext(), "bcdef.db", null, 1);
+                    String query_update = "UPDATE DC SET user_dc = " + total_al_value;
+
                 }
             }
         }
@@ -542,10 +548,6 @@ public class MainActivity  extends AppCompatActivity{
             if(cityName.compareTo("부산광역시") == 0) {
                 Toast.makeText(getApplicationContext(), cityName + "의 추천 술은 C1입니다.", Toast.LENGTH_LONG).show();
             }
-            else if(cityName.compareTo("서울특별시") == 0) {
-
-            }
-
             // \n is for new line
             //Toast.makeText(getApplicationContext(), "Your Location is - \n City name: " + cityName, Toast.LENGTH_LONG).show();
         }else{
