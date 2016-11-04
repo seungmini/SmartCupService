@@ -10,7 +10,7 @@
     <uses-permission-sdk-23 android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission-sdk-23 android:name="android.permission.INTERNET" />
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name="kakaolinkage.GlobalApplication"
@@ -46,13 +46,20 @@
         <activity android:name="tabview.FeedBackActivity" />
         <activity android:name="kakaolinkage.KakaoLoginActivity" />
         <activity android:name="bluetoothLe.DevicePopupActivity" />
+        <activity android:name="tabview.PhonePopupActivity"/>
 
         <service
             android:name=".BluetoothLeService"
             android:enabled="true" />
 
-        <activity android:name="tabview.DrinkPopupActivity"
-            android:theme="@android:style/Theme.Dialog"></activity>
+        <activity
+            android:name="tabview.DrinkPopupActivity"
+            android:theme="@android:style/Theme.Dialog" />
+
+        <service
+            android:name=".MyService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

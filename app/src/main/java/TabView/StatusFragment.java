@@ -32,10 +32,11 @@ import datas.SCSDBManager;
 public class StatusFragment extends Fragment {
     Activity activity;
     private Switch swc;
-    private Button sms_btn;
+    private Button gps_btn;
     private Button phone_btn;
 
     private final int REQUEST_BLE = 1;
+    private final int REQUEST_CONTACTS = 2;
 
     private TextView svText;
 
@@ -61,18 +62,23 @@ public class StatusFragment extends Fragment {
             }
         });
 
-/*        phone_btn = (Button)v.findViewById(R.id.phone_btn);
+        phone_btn = (Button)v.findViewById(R.id.phone_btn);
         phone_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //SCSDBManager db = new SCSDBManager(getActivity(), "bcdef.db", null, 1);
-                //Log.d("RA","value is " + db.getML());
-                long time = System.currentTimeMillis();
-                SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                String end_time = dayTime.format(new Date(time));
-                Log.e("RAcommunication", "" + end_time);
+                Intent intent = new Intent(activity, PhonePopupActivity.class);
+                activity.startActivity(intent);
+            }
+        });
+
+/*        gps_btn = (Button)v.findViewById(R.id.gps_btn);
+        gps_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });*/
+
         return v;
     }
 

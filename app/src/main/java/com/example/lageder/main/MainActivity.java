@@ -1,6 +1,10 @@
 package com.example.lageder.main;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.app.Service;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
@@ -12,6 +16,7 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -21,10 +26,13 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.provider.ContactsContract;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.SmsManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,7 +40,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import bluetoothLe.SampleGattAttributes;
 import datas.SCSDBManager;
@@ -53,6 +60,10 @@ import java.util.Locale;
 public class MainActivity  extends AppCompatActivity{
     private final static String TAG = MainActivity.class.getSimpleName();
     private static final int MY_PERMISSION_REQUEST_STORAGE = 1;
+    private static final int REQUEST_SERVICE = 1;
+
+    private BluetoothLeService mBluetoothLeService;
+    private MyService myService;
 
     private GPSTracker gps;
     private String start_time;
@@ -63,7 +74,7 @@ public class MainActivity  extends AppCompatActivity{
     private TextView title_textview;
     private String mDeviceName;
     private String mDeviceAddress;
-    private BluetoothLeService mBluetoothLeService;
+
     private boolean mConnected = false;
     private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics =
             new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
@@ -136,10 +147,10 @@ public class MainActivity  extends AppCompatActivity{
         //setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        String db_path = getDatabasePath("abcde.db").getAbsolutePath();
+        String db_path = getDatabasePath("s1.db").getAbsolutePath();
         File db = new File(db_path);
         if(db.exists() != true){
-            SCSDBManager db_manager = new SCSDBManager(this, "abcde.db", null, 1);
+            SCSDBManager db_manager = new SCSDBManager(this, "s2.db", null, 1);
             db_manager.setData();
         }
 
@@ -218,7 +229,7 @@ public class MainActivity  extends AppCompatActivity{
         Log.e("ActivityResult","Popup has been completed");
         Log.e("ActivityResult","RequestCode = " + requestCode);
         if(resultCode == RESULT_OK) {
-            if (requestCode == 1) {
+            if (requestCode == REQUEST_SERVICE) {
                 Log.e("ActivityResult","and result is OK");
                 mDeviceName = data.getStringExtra(EXTRAS_DEVICE_NAME);
                 Log.e("ActivityResult","Device name:" + mDeviceName);
@@ -272,6 +283,44 @@ public class MainActivity  extends AppCompatActivity{
         }
     };
 
+    private MyService.ICallback mCallback = new MyService.ICallback() {
+        public void sendSMS(String phoneNumber, String message) {
+            String SENT = "SMS_SENT";
+            String DELIVERED = "SMS_DELIVERED";
+
+            PendingIntent sentPI = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(SENT), 0);
+            PendingIntent deliveredPI = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(DELIVERED), 0);
+            // when the SMS has been sent
+            registerReceiver(new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    switch(getResultCode()) {
+                        case Activity.RESULT_OK:
+                            Toast.makeText(getBaseContext(), "믿을만한 사람에게 전송되었습니다.", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
+            }, new IntentFilter(SENT));
+            SmsManager sms = SmsManager.getDefault();
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.SEND_SMS},1);
+            sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
+        }
+    };
+
+    private ServiceConnection myServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            MyService.MyServiceBinder binder = (MyService.MyServiceBinder) iBinder;
+            myService = binder.getService();
+            myService.registerCallback(mCallback);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            myService = null;
+        }
+    };
+
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
@@ -321,20 +370,30 @@ public class MainActivity  extends AppCompatActivity{
                 mConnected = true;
                 long time = System.currentTimeMillis();
 
+                Intent service = new Intent(MainActivity.this, MyService.class);
+                bindService(service, myServiceConnection, Context.BIND_AUTO_CREATE);
+
                 SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 start_time = dayTime.format(new Date(time));
 
-                SCSDBManager sj_manager = new SCSDBManager(getApplicationContext(), "bcdef.db", null, 1);
+                SCSDBManager sj_manager = new SCSDBManager(getApplicationContext(), "s2.db", null, 1);
                 String query_update = "UPDATE DC SET user_dc = " + 0;
                 sj_manager.executeQuery(query_update);
+
+/*                Intent service_intent = new Intent(MainActivity.this,MyService.class);
+                startService(service_intent);*/
 
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
                 Log.d(TAG, "======= Disconnected ");
+
+/*                Intent service_intent = new Intent(MainActivity.this,MyService.class);
+                stopService(service_intent);*/
+
                 long time = System.currentTimeMillis();
                 SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 String end_time = dayTime.format(new Date(time));
-                SCSDBManager sj_manager = new SCSDBManager(getApplicationContext(), "bcdef.db", null, 1);
+                SCSDBManager sj_manager = new SCSDBManager(getApplicationContext(), "s2.db", null, 1);
                 if(start_time != "") {
                     if(al_kind.compareTo("S") == 0) {
                         String query = "insert into CUP values ('" + start_time + "','" + end_time + "'," + total_al_value + "," + 0 + "," + 0 + "," + 0 + ")";
@@ -387,14 +446,22 @@ public class MainActivity  extends AppCompatActivity{
                         //Log.e("Lageder","data[" + i + "] : " + data[i]);
                         int decimal = Integer.parseInt(data[i], 16);
                         if(i == 0) {
-                            al_kind += (char)decimal;
-                            Log.e("Lageder","data[" + i + "] : " + al_kind);
+                            if(decimal >= 'A' && decimal <= 'Z') {
+                                al_kind += (char)decimal;
+                                Log.e("Lageder","data[" + i + "] : " + al_kind);
+                            }
+                            else
+                                al_kind += 'S';
                         }
-                        else
-                            al_value += (char)decimal;
+                        else {
+                            if(decimal >= '0' && decimal <= '9') {
+                                al_value += (char)decimal;
+                            }
+                            else al_value += '0';
+                        }
                     }
                     total_al_value += Integer.parseInt(al_value);
-                    SCSDBManager sj_manager = new SCSDBManager(getApplicationContext(), "bcdef.db", null, 1);
+                    SCSDBManager sj_manager = new SCSDBManager(getApplicationContext(), "s2.db", null, 1);
                     String query_update = "UPDATE DC SET user_dc = " + total_al_value;
 
                 }
@@ -402,9 +469,13 @@ public class MainActivity  extends AppCompatActivity{
         }
     };
 
+
+
     public void disconnect_ble() {
         unbindService(mServiceConnection);
+        unbindService(myServiceConnection);
         mBluetoothLeService = null;
+        myService = null;
     }
 
     // Demonstrates how to iterate through the supported GATT Services/Characteristics.
@@ -558,12 +629,26 @@ public class MainActivity  extends AppCompatActivity{
         }
     }
 
-}
+/*    private void sendSMS(String phoneNumber, String message) {
+        String SENT = "SMS_SENT";
+        String DELIVERED = "SMS_DELIVERED";
 
-class ExtendThread extends Thread {
-    public void run() {
-        long time = System.currentTimeMillis();
-        while((System.currentTimeMillis() - time) / (1000 * 60) < 60) {;}
-        Log.e("RAcommunication", "외쳐 EE!!!");
-    }
+        PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent(SENT), 0);
+        PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0, new Intent(DELIVERED), 0);
+        // when the SMS has been sent
+        registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                switch(getResultCode()) {
+                    case Activity.RESULT_OK:
+                        Toast.makeText(getBaseContext(), "믿을만한 사람에게 전송되었습니다.", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        }, new IntentFilter(SENT));
+        SmsManager sms = SmsManager.getDefault();
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},1);
+        sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
+    }*/
+
 }

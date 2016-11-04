@@ -16,5 +16,18 @@
         android:textSize="35dp"
         android:id="@+id/ble_switch" />
 
+    <Button
+        android:text="Setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/phone_btn" />
+    <!--
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/gps_btn"
+        android:text="GPS Tracking" />
+     -->
+
 
 </LinearLayout>

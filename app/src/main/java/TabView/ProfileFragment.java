@@ -42,7 +42,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
-        final SCSDBManager db = new SCSDBManager(getActivity(), "abcde.db", null, 1);
+        final SCSDBManager db = new SCSDBManager(getActivity(), "s2.db", null, 1);
 
         name_textview = (TextView) v.findViewById(R.id.name_textview);
         soju_textview = (TextView)v.findViewById(R.id.most_soju);

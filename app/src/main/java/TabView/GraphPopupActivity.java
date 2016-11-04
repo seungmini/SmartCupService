@@ -67,7 +67,7 @@ public class GraphPopupActivity extends Activity {
     }
 
     public void makeGraphPopup(int chart_number){
-        SCSDBManager db = new SCSDBManager(this, "Sample.db", null, 1);
+        SCSDBManager db = new SCSDBManager(this, "s2.db", null, 1);
 
         BarData data = new BarData(getXLabel_week(), db.getDataSet_beforeweek(chart_number));
         data.setValueFormatter(new YValueFormatter());

@@ -23,6 +23,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import tabview.ListViewItem;
+
 /**
  * Created by Lageder on 2016-08-03.
  */
@@ -83,6 +85,11 @@ public class SCSDBManager extends SQLiteOpenHelper {
         );
 
         db.execSQL("INSERT INTO DC VALUES (1,0);");
+
+        db.execSQL(
+                "CREATE TABLE IF NOT EXISTS PHONE (" +
+                "phone_num varchar(20) NOT NULL UNIQUE, " +
+                "user_name varchar(20) NOT NULL);");
     }
     // IF NOT EXISTS
 
@@ -122,8 +129,24 @@ public class SCSDBManager extends SQLiteOpenHelper {
         cs = db.rawQuery(query,null);
         cs.moveToFirst();
 
-        int ret = cs.getInt(1);
+        int ret = cs.getInt(0);
         return ret;
+    }
+
+    public ArrayList<ListViewItem> getPhone() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cs;
+        String query = "SELECT * FROM PHONE";
+        ArrayList<ListViewItem> arr = new ArrayList<ListViewItem>();
+        cs = db.rawQuery(query,null);
+
+        while(cs.moveToNext()) {
+            ListViewItem temp = new ListViewItem();
+            temp.setPhone_num(cs.getString(0));
+            temp.setUser_name(cs.getString(1));
+            arr.add(temp);
+        }
+        return arr;
     }
 
     public int getDC() {
@@ -328,6 +351,7 @@ public class SCSDBManager extends SQLiteOpenHelper {
             return cs.getString(0);
         }
     }
+
 
 
     public String getMostTime(){
@@ -899,80 +923,80 @@ public class SCSDBManager extends SQLiteOpenHelper {
     public void setData(){
         SQLiteDatabase db = getWritableDatabase();
         String[] query_cup = new String[]{
-                "insert into CUP values('2016-04-01 20:33:00','2016-04-02 00:25:00',820,0,0,1);",
-                "insert into CUP values('2016-04-02 19:40:00','2016-04-02 22:11:00',460,570,0,1);",
-                "insert into CUP values('2016-04-05 22:10:00','2016-04-06 00:07:00',540,0,0,1);",
-                "insert into CUP values('2016-04-08 21:52:00','2016-04-08 23:52:00',0,1530,0,-1);",
-                "insert into CUP values('2016-04-09 22:40:00','2016-04-10 00:48:00',670,0,0,1);",
-                "insert into CUP values('2016-04-15 20:20:00','2016-04-15 22:46:00',530,0,0,-1);",
-                "insert into CUP values('2016-04-17 19:45:00','2016-04-17 22:31:00',760,220,0,1);",
-                "insert into CUP values('2016-04-22 22:33:00','2016-04-23 01:17:00',370,0,0,-1);",
-                "insert into CUP values('2016-04-27 21:35:00','2016-04-27 23:59:00',180,480,0,-1);",
-                "insert into CUP values('2016-04-29 18:29:00','2016-04-29 22:01:00',650,0,0,-1);",
-                "insert into CUP values('2016-05-04 22:31:00','2016-05-05 00:28:00',780,0,0,1);",
-                "insert into CUP values('2016-05-05 19:36:00','2016-05-05 21:55:00',560,0,0,1);",
-                "insert into CUP values('2016-05-06 21:23:00','2016-05-06 23:40:00',0,0,970,-1);",
-                "insert into CUP values('2016-05-13 22:38:00','2016-05-14 00:54:00',520,0,0,-1);",
-                "insert into CUP values('2016-05-18 21:35:00','2016-05-18 23:12:00',690,0,0,1);",
-                "insert into CUP values('2016-05-20 21:07:00','2016-05-20 23:47:00',0,1260,0,-1);",
-                "insert into CUP values('2016-05-21 20:21:00','2016-05-21 23:11:00',480,0,0,-1);",
-                "insert into CUP values('2016-05-27 19:30:00','2016-05-27 22:24:00',650,0,0,1);",
-                "insert into CUP values('2016-06-03 18:37:00','2016-06-03 22:28:00',770,0,0,1);",
-                "insert into CUP values('2016-06-05 19:53:00','2016-06-05 23:56:00',560,0,0,1);",
-                "insert into CUP values('2016-06-09 23:20:00','2016-06-10 02:15:00',210,680,0,-1);",
-                "insert into CUP values('2016-06-10 21:34:00','2016-06-10 23:38:00',0,0,740,-1);",
-                "insert into CUP values('2016-06-18 22:48:00','2016-06-19 00:43:00',730,0,0,1);",
-                "insert into CUP values('2016-06-22 21:31:00','2016-06-22 23:20:00',550,0,0,1);",
-                "insert into CUP values('2016-06-24 22:47:00','2016-06-25 00:51:00',670,0,0,1);",
-                "insert into CUP values('2016-06-30 19:29:00','2016-06-30 22:48:00',420,310,0,-1);",
-                "insert into CUP values('2016-07-02 22:30:00','2016-07-03 00:24:00',660,0,0,1);",
-                "insert into CUP values('2016-07-06 22:42:00','2016-07-07 01:25:00',0,0,1120,-1);",
-                "insert into CUP values('2016-07-08 20:14:00','2016-07-08 23:22:00',340,0,0,-1);",
-                "insert into CUP values('2016-07-16 22:22:00','2016-07-17 01:26:00',350,710,0,-1);",
-                "insert into CUP values('2016-07-22 20:30:00','2016-07-22 23:58:00',460,0,0,-1);",
-                "insert into CUP values('2016-07-23 22:51:00','2016-07-24 00:19:00',580,0,0,1);",
-                "insert into CUP values('2016-07-27 21:37:00','2016-07-27 23:21:00',0,0,980,-1);",
-                "insert into CUP values('2016-07-29 20:18:00','2016-07-31 00:56:00',410,0,0,-1);",
-                "insert into CUP values('2016-08-04 22:30:00','2016-08-05 00:27:00',370,0,0,-1);",
-                "insert into CUP values('2016-08-06 20:51:00','2016-08-06 22:39:00',300,360,0,-1);",
-                "insert into CUP values('2016-08-09 22:32:00','2016-08-10 01:36:00',650,0,0,1);",
-                "insert into CUP values('2016-08-12 20:30:00','2016-08-12 23:13:00',420,640,0,-1);",
-                "insert into CUP values('2016-08-14 23:30:00','2016-08-15 02:17:00',450,620,0,-1);"
+                "insert into CUP values('2016-07-01 20:33:00','2016-07-02 00:25:00',820,0,0,1);",
+                "insert into CUP values('2016-07-02 19:40:00','2016-07-02 22:11:00',460,570,0,1);",
+                "insert into CUP values('2016-07-05 22:10:00','2016-07-06 00:07:00',540,0,0,1);",
+                "insert into CUP values('2016-07-08 21:52:00','2016-07-08 23:52:00',0,1530,0,-1);",
+                "insert into CUP values('2016-07-09 22:40:00','2016-07-10 00:48:00',670,0,0,1);",
+                "insert into CUP values('2016-07-15 20:20:00','2016-07-15 22:46:00',530,0,0,-1);",
+                "insert into CUP values('2016-07-17 19:45:00','2016-07-17 22:31:00',760,220,0,1);",
+                "insert into CUP values('2016-07-22 22:33:00','2016-07-23 01:17:00',370,0,0,-1);",
+                "insert into CUP values('2016-07-27 21:35:00','2016-07-27 23:59:00',180,480,0,-1);",
+                "insert into CUP values('2016-07-29 18:29:00','2016-07-29 22:01:00',650,0,0,-1);",
+                "insert into CUP values('2016-08-04 22:31:00','2016-08-05 00:28:00',780,0,0,1);",
+                "insert into CUP values('2016-08-05 19:36:00','2016-08-05 21:55:00',560,0,0,1);",
+                "insert into CUP values('2016-08-06 21:23:00','2016-08-06 23:40:00',0,0,970,-1);",
+                "insert into CUP values('2016-08-13 22:38:00','2016-08-14 00:54:00',520,0,0,-1);",
+                "insert into CUP values('2016-08-18 21:35:00','2016-08-18 23:12:00',690,0,0,1);",
+                "insert into CUP values('2016-08-20 21:07:00','2016-08-20 23:47:00',0,1260,0,-1);",
+                "insert into CUP values('2016-08-21 20:21:00','2016-08-21 23:11:00',480,0,0,-1);",
+                "insert into CUP values('2016-08-27 19:30:00','2016-08-27 22:24:00',650,0,0,1);",
+                "insert into CUP values('2016-09-03 18:37:00','2016-09-03 22:28:00',770,0,0,1);",
+                "insert into CUP values('2016-09-05 19:53:00','2016-09-05 23:56:00',560,0,0,1);",
+                "insert into CUP values('2016-09-09 23:20:00','2016-09-10 02:15:00',210,680,0,-1);",
+                "insert into CUP values('2016-09-10 21:34:00','2016-09-10 23:38:00',0,0,740,-1);",
+                "insert into CUP values('2016-09-18 22:48:00','2016-09-19 00:43:00',730,0,0,1);",
+                "insert into CUP values('2016-09-22 21:31:00','2016-09-22 23:20:00',550,0,0,1);",
+                "insert into CUP values('2016-09-24 22:47:00','2016-09-25 00:51:00',670,0,0,1);",
+                "insert into CUP values('2016-09-30 19:29:00','2016-09-30 22:48:00',420,310,0,-1);",
+                "insert into CUP values('2016-10-02 22:30:00','2016-10-03 00:24:00',660,0,0,1);",
+                "insert into CUP values('2016-10-06 22:42:00','2016-10-07 01:25:00',0,0,1120,-1);",
+                "insert into CUP values('2016-10-08 20:14:00','2016-10-08 23:22:00',340,0,0,-1);",
+                "insert into CUP values('2016-10-16 22:22:00','2016-10-17 01:26:00',350,710,0,-1);",
+                "insert into CUP values('2016-10-22 20:30:00','2016-10-22 23:58:00',460,0,0,-1);",
+                "insert into CUP values('2016-10-23 22:51:00','2016-10-24 00:19:00',580,0,0,1);",
+                "insert into CUP values('2016-10-27 21:37:00','2016-10-27 23:21:00',0,0,980,-1);",
+                "insert into CUP values('2016-10-29 20:18:00','2016-10-31 00:56:00',410,0,0,-1);",
+                "insert into CUP values('2016-11-04 22:30:00','2016-11-05 00:27:00',370,0,0,-1);",
+                "insert into CUP values('2016-11-06 20:51:00','2016-11-06 22:39:00',300,360,0,-1);",
+                "insert into CUP values('2016-11-09 22:32:00','2016-11-10 01:36:00',650,0,0,1);",
+                "insert into CUP values('2016-11-12 20:30:00','2016-11-12 23:13:00',420,640,0,-1);",
+                "insert into CUP values('2016-11-14 23:30:00','2016-11-15 02:17:00',450,620,0,-1);"
         };
 
-        String[] query_soju = new String[]{"insert into SOJU values('2016-04-01 20:33:00',1,3,0,0,0);",
-                "insert into SOJU values('2016-04-02 19:40:00',0,1,0,0,0);",
-                "insert into SOJU values('2016-04-05 22:10:00',0,1,0,0,0);",
-                "insert into SOJU values('2016-04-09 22:40:00',0,1,0,0,0);",
-                "insert into SOJU values('2016-04-15 20:20:00',0,1,0,0,0);",
-                "insert into SOJU values('2016-04-17 19:45:00',1,0,0,0,0);",
-                "insert into SOJU values('2016-04-22 22:33:00',0,1,0,0,0);",
-                "insert into SOJU values('2016-04-27 21:35:00',0,1,0,0,0);",
-                "insert into SOJU values('2016-04-29 18:29:00',0,1,0,0,0);",
-                "insert into SOJU values('2016-05-04 22:31:00',0,2,1,0,0);",
-                "insert into SOJU values('2016-05-05 19:36:00',0,1,0,0,0);",
-                "insert into SOJU values('2016-05-13 22:38:00',1,0,0,0,0);",
-                "insert into SOJU values('2016-05-18 21:35:00',0,1,0,0,0);",
-                "insert into SOJU values('2016-05-21 20:21:00',0,1,0,0,0);",
-                "insert into SOJU values('2016-05-27 19:30:00',1,4,0,0,0);",
-                "insert into SOJU values('2016-06-03 18:37:00',0,1,0,0,0);",
-                "insert into SOJU values('2016-06-05 19:53:00',0,1,0,0,0);",
-                "insert into SOJU values('2016-06-09 23:20:00',0,1,0,0,0);",
-                "insert into SOJU values('2016-06-18 22:48:00',0,3,0,1,0);",
-                "insert into SOJU values('2016-06-22 21:31:00',0,1,0,0,0);",
-                "insert into SOJU values('2016-06-24 22:47:00',1,0,0,0,0);",
-                "insert into SOJU values('2016-06-30 19:29:00',1,0,0,0,0);",
-                "insert into SOJU values('2016-07-02 22:30:00',2,1,0,0,0);",
-                "insert into SOJU values('2016-07-08 20:14:00',0,1,0,0,0);",
-                "insert into SOJU values('2016-07-16 22:22:00',1,0,0,0,0);",
-                "insert into SOJU values('2016-07-22 20:30:00',0,1,0,0,0);",
-                "insert into SOJU values('2016-07-23 22:51:00',0,2,0,1,0);",
-                "insert into SOJU values('2016-07-29 20:18:00',0,1,0,0,0);",
-                "insert into SOJU values('2016-08-04 22:30:00',0,1,0,0,0);",
-                "insert into SOJU values('2016-08-06 20:51:00',0,1,0,0,0);",
-                "insert into SOJU values('2016-08-09 22:32:00',0,0,0,0,1);",
-                "insert into SOJU values('2016-08-12 20:30:00',0,1,0,0,0);",
-                "insert into SOJU values('2016-08-14 23:30:00',0,1,0,0,0);"
+        String[] query_soju = new String[]{"insert into SOJU values('2016-07-01 20:33:00',1,3,0,0,0);",
+                "insert into SOJU values('2016-07-02 19:40:00',0,1,0,0,0);",
+                "insert into SOJU values('2016-07-05 22:10:00',0,1,0,0,0);",
+                "insert into SOJU values('2016-07-09 22:40:00',0,1,0,0,0);",
+                "insert into SOJU values('2016-07-15 20:20:00',0,1,0,0,0);",
+                "insert into SOJU values('2016-07-17 19:45:00',1,0,0,0,0);",
+                "insert into SOJU values('2016-07-22 22:33:00',0,1,0,0,0);",
+                "insert into SOJU values('2016-07-27 21:35:00',0,1,0,0,0);",
+                "insert into SOJU values('2016-07-29 18:29:00',0,1,0,0,0);",
+                "insert into SOJU values('2016-08-04 22:31:00',0,2,1,0,0);",
+                "insert into SOJU values('2016-08-05 19:36:00',0,1,0,0,0);",
+                "insert into SOJU values('2016-08-13 22:38:00',1,0,0,0,0);",
+                "insert into SOJU values('2016-08-18 21:35:00',0,1,0,0,0);",
+                "insert into SOJU values('2016-08-21 20:21:00',0,1,0,0,0);",
+                "insert into SOJU values('2016-08-27 19:30:00',1,4,0,0,0);",
+                "insert into SOJU values('2016-08-03 18:37:00',0,1,0,0,0);",
+                "insert into SOJU values('2016-08-05 19:53:00',0,1,0,0,0);",
+                "insert into SOJU values('2016-08-09 23:20:00',0,1,0,0,0);",
+                "insert into SOJU values('2016-08-18 22:48:00',0,3,0,1,0);",
+                "insert into SOJU values('2016-08-22 21:31:00',0,1,0,0,0);",
+                "insert into SOJU values('2016-08-24 22:47:00',1,0,0,0,0);",
+                "insert into SOJU values('2016-08-30 19:29:00',1,0,0,0,0);",
+                "insert into SOJU values('2016-09-02 22:30:00',2,1,0,0,0);",
+                "insert into SOJU values('2016-09-08 20:14:00',0,1,0,0,0);",
+                "insert into SOJU values('2016-09-16 22:22:00',1,0,0,0,0);",
+                "insert into SOJU values('2016-09-22 20:30:00',0,1,0,0,0);",
+                "insert into SOJU values('2016-09-23 22:51:00',0,2,0,1,0);",
+                "insert into SOJU values('2016-09-29 20:18:00',0,1,0,0,0);",
+                "insert into SOJU values('2016-11-04 22:30:00',0,1,0,0,0);",
+                "insert into SOJU values('2016-11-06 20:51:00',0,1,0,0,0);",
+                "insert into SOJU values('2016-11-09 22:32:00',0,0,0,0,1);",
+                "insert into SOJU values('2016-11-12 20:30:00',0,1,0,0,0);",
+                "insert into SOJU values('2016-11-14 23:30:00',0,1,0,0,0);"
         };
 
         String[] query_beer= new String[]{

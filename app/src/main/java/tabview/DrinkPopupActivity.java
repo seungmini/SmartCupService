@@ -38,7 +38,7 @@ public class DrinkPopupActivity extends Activity {
 
         setContentView(R.layout.activity_drink_popup);
 
-        db = new SCSDBManager(this, "abcde.db", null, 1);
+        db = new SCSDBManager(this, "s2.db", null, 1);
 
 
         font_gabia = Typeface.createFromAsset(getAssets(), "gabia_solmee.ttf");
