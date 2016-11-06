@@ -35,7 +35,6 @@ import java.io.IOException;
 
 public class ProfileFragment extends Fragment {
     public static TextView name_textview,soju_textview,makg_textview,beer_textview, time_textview, time_result_textview, day_textview, day_result_textview, brand_textview,recommend_textview;
-    public static ImageView profile_imagview;
     public static CircularImageView circular_imageview;
     public static ImageButton image_btn;
 
@@ -48,7 +47,7 @@ public class ProfileFragment extends Fragment {
         soju_textview = (TextView)v.findViewById(R.id.most_soju);
         beer_textview = (TextView)v.findViewById(R.id.most_beer);
         makg_textview = (TextView)v.findViewById(R.id.most_makg);
-        recommend_textview = (TextView)v.findViewById(R.id.recommend_tv);
+
 
 
         time_textview = (TextView)v.findViewById(R.id.lastest_time);
@@ -66,6 +65,7 @@ public class ProfileFragment extends Fragment {
 
         circular_imageview.setBorderColor(Color.rgb(0,0,0));
         circular_imageview.setBorderWidth(0);
+
 
         String name_path = getActivity().getApplicationContext().getFilesDir().getAbsolutePath() + "/name.txt";
         String image_path = getActivity().getApplicationContext().getFilesDir().getAbsolutePath() + "/profile.jpg";
@@ -157,15 +157,7 @@ public class ProfileFragment extends Fragment {
         day_result_textview.setTypeface(font_gabia);
         brand_textview.setTypeface(font_gabia);
 
-        image_btn = (ImageButton)v.findViewById(R.id.imageButton);
-        image_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String location = "";
-                MainActivity myActivity = (MainActivity) getActivity();
-                myActivity.checkPermission();
-            }
-        });
+
 
         return v;
     }

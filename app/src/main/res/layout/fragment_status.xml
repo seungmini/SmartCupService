@@ -1,33 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:circular="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:background="#D5D5D5"
-    android:gravity="left|center"
-    android:elevation="1dp">
+    tools:context="tabview.StatusFragment"
+    android:background="#E3E3E3">
 
 
-    <Switch
-        android:text="Bluetooth Switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="35dp"
-        android:id="@+id/ble_switch" />
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#42B5FF"
+            android:textColor="#FFFFFF"
+            android:text="블루투스"
+            android:id="@+id/ble_switch"
+            android:textSize="25dp"
+            android:drawableLeft="@drawable/bluetooth_32"
 
-    <Button
-        android:text="Setting"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/phone_btn" />
-    <!--
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/gps_btn"
-        android:text="GPS Tracking" />
-     -->
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:drawablePadding="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+             />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#74DA74"
+            android:textColor="#FFFFFF"
+            android:text="자동 문자 번호 관리"
+            android:id="@+id/phone_btn"
+            android:textSize="25dp"
+            android:drawableLeft="@drawable/pb_green_32"
+            android:drawablePadding="-20dp"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            />
 
 </LinearLayout>

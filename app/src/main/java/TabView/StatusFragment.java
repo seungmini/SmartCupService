@@ -6,6 +6,7 @@ package tabview;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
@@ -31,9 +32,9 @@ import datas.SCSDBManager;
 
 public class StatusFragment extends Fragment {
     Activity activity;
-    private Switch swc;
+    private Switch switch_bluetooth;
     private Button gps_btn;
-    private Button phone_btn;
+    private Button button_phone_num;
 
     private final int REQUEST_BLE = 1;
     private final int REQUEST_CONTACTS = 2;
@@ -46,8 +47,8 @@ public class StatusFragment extends Fragment {
 
         activity = getActivity();
 
-        swc = (Switch)v.findViewById(R.id.ble_switch);
-        swc.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
+        switch_bluetooth = (Switch)v.findViewById(R.id.ble_switch);
+        switch_bluetooth.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton cb, boolean isChecking) {
                 String str = String.valueOf(isChecking);
                 if(isChecking) {
@@ -62,14 +63,16 @@ public class StatusFragment extends Fragment {
             }
         });
 
-        phone_btn = (Button)v.findViewById(R.id.phone_btn);
-        phone_btn.setOnClickListener(new View.OnClickListener() {
+        button_phone_num = (Button)v.findViewById(R.id.phone_btn);
+        button_phone_num.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, PhonePopupActivity.class);
                 activity.startActivity(intent);
             }
         });
+
+
 
 /*        gps_btn = (Button)v.findViewById(R.id.gps_btn);
         gps_btn.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +81,9 @@ public class StatusFragment extends Fragment {
 
             }
         });*/
+        Typeface font_gabia = Typeface.createFromAsset(getActivity().getAssets(), "gabia_solmee.ttf");
+        switch_bluetooth.setTypeface(font_gabia);
+        button_phone_num.setTypeface(font_gabia);
 
         return v;
     }

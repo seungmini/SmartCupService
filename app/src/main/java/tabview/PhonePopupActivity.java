@@ -1,18 +1,22 @@
 package tabview;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.lageder.main.R;
 
@@ -24,10 +28,11 @@ import datas.SCSDBManager;
  * Created by Lageder on 2016-11-03.
  */
 
-public class PhonePopupActivity extends AppCompatActivity {
+public class PhonePopupActivity extends Activity {
     private static final int REQUEST_CONTACTS = 2;
     private Display display;
-    private Button btn_add, btn_type;
+    private TextView textview_title, textview_num, textview_name;
+    private Button btn_add, btn_ok;
     private String receiveName;
     private String receivePhone;
     private ListView listview;
@@ -37,6 +42,13 @@ public class PhonePopupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        layoutParams.dimAmount = 0.7f;
+        getWindow().setAttributes(layoutParams);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.activity_number_set);
 
         adapter = new NumberAdapter();
@@ -67,7 +79,7 @@ public class PhonePopupActivity extends AppCompatActivity {
         getWindow().getAttributes().height = height;
 
         btn_add = (Button) findViewById(R.id.btn_add);
-        btn_type = (Button) findViewById(R.id.btn_type);
+        //btn_type = (Button) findViewById(R.id.btn_type);
 
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +89,19 @@ public class PhonePopupActivity extends AppCompatActivity {
                 startActivityForResult(intent,REQUEST_CONTACTS);
             }
         });
+
+        btn_ok = (Button)findViewById(R.id.btn_ok);
+        textview_title = (TextView)findViewById(R.id.phone_title);
+        textview_name = (TextView)findViewById(R.id.phone_name);
+        textview_num = (TextView)findViewById(R.id.phone_num);
+
+        Typeface font_gabia = Typeface.createFromAsset(this.getAssets(), "gabia_solmee.ttf");
+
+        textview_title.setTypeface(font_gabia);
+        textview_name.setTypeface(font_gabia);
+        textview_num.setTypeface(font_gabia);
+        btn_add.setTypeface(font_gabia);
+        btn_ok.setTypeface(font_gabia);
 
 
     }

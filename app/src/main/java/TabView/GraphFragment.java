@@ -7,12 +7,14 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.lageder.main.R;
 import com.github.mikephil.charting.charts.BarChart;
@@ -22,6 +24,8 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -41,10 +45,11 @@ public class GraphFragment extends Fragment {
     private BarChart chart;
     private Spinner spinner_date;
     private Typeface font_gabia;
-
+    private TextView textview_trend,textview_trend_title;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_graph, container, false);
+        final SCSDBManager db = new SCSDBManager(getActivity(), "s2.db", null, 1);
 
         activity = getActivity();
 
@@ -72,14 +77,23 @@ public class GraphFragment extends Fragment {
         chart.setDescription("");
         makeWeekGraph();
 
+        textview_trend = (TextView)v.findViewById(R.id.trend);
+        textview_trend.setText(db.getTrend());
+        textview_trend.setTypeface(font_gabia);
+
+        textview_trend_title = (TextView)v.findViewById(R.id.trend_title);
+        textview_trend_title.setTypeface(font_gabia);
+
+        textview_trend_title.setText(Html.fromHtml("요즘 내 <font color='#009900'>음주</font>습관은 어떻니?"));
+
         return v;
     }
 
 
     public void makeSpinnerList(){
         ArrayList<String> datelist = new ArrayList<>();
-        datelist.add("최근 한주 GRAPH");
-        datelist.add("최근 한달 GRAPH");
+        datelist.add("최근 한주 그래프");
+        datelist.add("최근 한달 그래프");
         ArrayAdapter<String> list = new ArrayAdapter<String>(getContext(),R.layout.spinner_item,datelist);
         spinner_date.setAdapter(list);
     }
@@ -108,11 +122,12 @@ public class GraphFragment extends Fragment {
     }
 
     public void makeWeekGraph(){
-        SCSDBManager db = new SCSDBManager(getActivity(), "abcde.db", null, 1);
+        SCSDBManager db = new SCSDBManager(getActivity(), "s2.db", null, 1);
 
         BarData data = new BarData(getXLabel_week(), db.getDataSet_thisweek());
         data.setValueFormatter(new YValueFormatter());
         data.setValueTypeface(font_gabia);
+        data.setValueTextSize(20);
         chart.setData(data);
 
         //시작값 0 설정
@@ -129,7 +144,7 @@ public class GraphFragment extends Fragment {
 
         XAxis xais = chart.getXAxis();
         xais.setTypeface(font_gabia);
-        xais.setTextSize(14);
+        xais.setTextSize(16);
         xais.setPosition(XAxis.XAxisPosition.BOTTOM);
 
 
@@ -139,13 +154,13 @@ public class GraphFragment extends Fragment {
     }
     public void makeMonthGraph(){
 
-        SCSDBManager db = new SCSDBManager(getActivity(), "abcde.db", null, 1);
+        SCSDBManager db = new SCSDBManager(getActivity(), "s2.db", null, 1);
         Typeface font_gabia = Typeface.createFromAsset(getActivity().getAssets(), "gabia_solmee.ttf");
 
         BarData data = new BarData(getXLabel_month(), db.getDataSet_month());
         data.setValueFormatter(new YValueFormatter());
         data.setValueTypeface(font_gabia);
-        data.setValueTextSize(11);
+        data.setValueTextSize(20);
         chart.setData(data);
         chart.setTouchEnabled(true);
 
@@ -202,9 +217,9 @@ public class GraphFragment extends Fragment {
                         startActivity(graph_popup_intent);
                         break;
                     case 3:
-                        //graph_popup_intent = new Intent(getContext(), GraphPopupActivity.class);
-                        graph_popup_intent = new Intent(getContext(), FeedBackActivity.class);
-                        //graph_popup_intent.putExtra("chart_number",4);
+                        graph_popup_intent = new Intent(getContext(), GraphPopupActivity.class);
+                        //graph_popup_intent = new Intent(getContext(), FeedBackActivity.class);
+                        graph_popup_intent.putExtra("chart_number",4);
                         startActivity(graph_popup_intent);
                         break;
 

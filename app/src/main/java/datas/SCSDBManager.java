@@ -345,14 +345,12 @@ public class SCSDBManager extends SQLiteOpenHelper {
         cs.moveToFirst();
 
         if(cs.getCount() == 0) {
-            return "0";
+            return "자료 부족";
         }
         else {
             return cs.getString(0);
         }
     }
-
-
 
     public String getMostTime(){
         String result="";
@@ -367,6 +365,9 @@ public class SCSDBManager extends SQLiteOpenHelper {
 
         cs = db.rawQuery(query_time,null);
         cs.moveToFirst();
+        if(cs.getCount() == 0){
+            return "자료 부족";
+        }
         while(cs.moveToNext()) {
             int s_time = cs.getInt(0);
             int f_time = cs.getInt(1);
@@ -381,6 +382,7 @@ public class SCSDBManager extends SQLiteOpenHelper {
         for(int i = 0; i < 29; i++){
             count_time.put(i,count[i]);
         }
+
         int result_time = 0;
         int maxValueInMap_time=(Collections.max(count_time.values()));  // This will return max value in the Hashmap
         for (Map.Entry<Integer, Integer> entry : count_time.entrySet()) {  // Itrate through hashmap
@@ -394,7 +396,6 @@ public class SCSDBManager extends SQLiteOpenHelper {
 
 
         Cursor cs_day;
-        //String query_day = "select s_time from CUP";
         String query_day = "SELECT strftime('%Y',s_time),strftime('%m',s_time),strftime('%d',s_time), strftime('%H',s_time) FROM CUP";
 
         cs_day = db.rawQuery(query_day,null);
@@ -462,7 +463,6 @@ public class SCSDBManager extends SQLiteOpenHelper {
         return result;
     }
 
-
     public String getMostSoju(){
         SQLiteDatabase db = getReadableDatabase();
         Cursor cs;
@@ -499,6 +499,9 @@ public class SCSDBManager extends SQLiteOpenHelper {
         count_mh = cs.getCount();
         count_hashmap.put("한라산",count_mh);
 
+        if(count_c1 + count_gd + count_sh + count_lf + count_mh == 0){
+            return "자료 부족";
+        }
         int maxValueInMap=(Collections.max(count_hashmap.values()));  // This will return max value in the Hashmap
         for (Map.Entry<String, Integer> entry : count_hashmap.entrySet()) {  // Itrate through hashmap
             if (entry.getValue()==maxValueInMap) {
@@ -539,6 +542,9 @@ public class SCSDBManager extends SQLiteOpenHelper {
         count_ob = cs.getCount();
         count_hashmap.put("OB",count_ob);
 
+        if(count_ob + count_hite + count_cass + count_max == 0){
+            return "자료 부족";
+        }
 
         int maxValueInMap=(Collections.max(count_hashmap.values()));  // This will return max value in the Hashmap
         for (Map.Entry<String, Integer> entry : count_hashmap.entrySet()) {  // Itrate through hashmap
@@ -593,6 +599,9 @@ public class SCSDBManager extends SQLiteOpenHelper {
         count_uguk = cs.getCount();
         count_hashmap.put("우국생",count_uguk);
 
+        if(count_guks + count_geum + count_neur + count_saen + count_seou + count_uguk == 0){
+            return "자료 부족";
+        }
 
         int maxValueInMap=(Collections.max(count_hashmap.values()));  // This will return max value in the Hashmap
         for (Map.Entry<String, Integer> entry : count_hashmap.entrySet()) {  // Itrate through hashmap
@@ -616,8 +625,6 @@ public class SCSDBManager extends SQLiteOpenHelper {
 
         return dayNum ;
     }
-
-
 
     public ArrayList<IBarDataSet> getDataSet_month() {
 
@@ -919,6 +926,115 @@ public class SCSDBManager extends SQLiteOpenHelper {
 
     }
 
+    public int getAverageDrinkTime(){//리턴이 -1일시 자료부족 아니면 분 리턴.
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cs;
+        String query_hangover = "select strftime('%H',s_time),strftime('%M',s_time),strftime('%H',f_time),strftime('%M',f_time) from CUP ";
+        cs = db.rawQuery(query_hangover, null);
+
+        if( cs.getCount() < 5){
+            return -1;
+        }
+
+        int time = 0;
+        while(cs.moveToNext()){
+            int s_hour = cs.getInt(0);
+            int s_min = cs.getInt(1);
+            int f_hour = cs.getInt(2);
+            int f_min = cs.getInt(3);
+
+            if(f_hour < s_hour){
+                f_hour += 24;
+            }
+            int interval = f_hour - s_hour;
+            int interval_min = interval * 60;
+            time += interval_min - s_min + f_min;
+        }
+        int average_time = time / cs.getCount();
+
+        return average_time;
+    }
+
+    public String getTrend(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cs;
+        String query_hangover = "select hangover,s_time from CUP where hangover != 0 order by s_time desc  limit 5";
+        //최근 5개의 데이터에서 숙취 유무 체크
+        cs = db.rawQuery(query_hangover, null);
+        int hangover = 0;
+        int flag_hangover = -1;
+        if(cs.getCount() < 5){
+            return "-1";
+        }
+        else {
+            while (cs.moveToNext()) {
+                //Log.e("음",""+cs.getInt(0) + " , " +cs.getString(1));
+                if (cs.getInt(0) == 1) {
+                    hangover++;
+                }
+            }//hangover >=3 일시 요즘 과하다.
+            if(hangover >=3){
+                flag_hangover = 1;
+            }
+        }
+
+
+        ////////////// 최근 1주일
+        Calendar calendar = Calendar.getInstance();
+
+        long now = System.currentTimeMillis();
+        Date date = new Date(now);
+        SimpleDateFormat CurDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String today_date = CurDateFormat.format(date);
+        int today = calendar.get(Calendar.DAY_OF_WEEK);
+
+        String query_week ="";
+        query_week = "SELECT ml_soju, ml_macj, ml_mack ,s_time FROM CUP WHERE s_time BETWEEN datetime('" + today_date +"', '-6 days') AND datetime('" + today_date +"', '-0 days');";
+        Cursor cs_week;
+
+        cs_week = db.rawQuery(query_week,null);
+        int alchol = 0;
+        int flag_alchol = -1;
+        //Log.e("??","갯수 : " + cs_week.getCount());
+        if(cs_week.getCount() == 0){
+            //이번주 기록 x
+        }
+        else{
+            while(cs_week.moveToNext()) {
+                //Log.e("??","날짜 : " +today_date+ " vs "+ cs_week.getString(3));
+                alchol += 0.17 *cs_week.getInt(0) + 0.045 * cs_week.getInt(1) + 0.06 * cs_week.getInt(2);
+            }
+            if(alchol <122){// 2병이하
+                flag_alchol = -1;
+            }
+            else{
+                flag_alchol = 1;
+            }
+        }
+        //Log.e("???"," hangover, alchol =  "+ hangover + ", "+alchol);
+        String result = "";
+        if(flag_alchol == 1 && flag_hangover == 1){
+            result = "요즘 들어 주량보다 더 많은 량의 술을 드시고 계십니다. \n" +
+                    "또 최근 1주 동안 의사의 권장량인 2병 보다 더 많은 술을 드셨습니다 :(\n" +
+                    "건강에 무리가 갈 수 있으니 음주를 줄이시길 권장합니다.";
+        }
+        if(flag_alchol == 1 && flag_hangover == -1){
+            result = "최근 데이터를 보니 의사들의 권장량 보다는 적게 마시고 계십니다만" +
+                    "본인의 주량보다는 더 많은 량을 드시고 계십니다." +
+                    "한번에 조금씩만 덜 마시는건 어떨까요?";
+        }
+        if(flag_alchol == -1 && flag_hangover == 1){
+            result = "본인의 주량을 넘지 않는 선에서 적절히 마시고 계십니다.\n" +
+                    "하지만 의사분들이 권장하시는 것보다 많은 량을 드시고 계신것 같습니다.\n" +
+                    "술자리를 조금 줄여 보시는 건 어떨까요?";
+        }
+        if(flag_alchol == -1 && flag_hangover == -1){
+            result = "자주 마시지도 않고 마실때도 자신의 주량을 넘지 않으 시는군요!\n" +
+                    "아주 좋은 음주 습관을 가지고 계십니다 :D";
+        }
+
+        return result;
+    }
 
     public void setData(){
         SQLiteDatabase db = getWritableDatabase();
@@ -960,8 +1076,6 @@ public class SCSDBManager extends SQLiteOpenHelper {
                 "insert into CUP values('2016-11-04 22:30:00','2016-11-05 00:27:00',370,0,0,-1);",
                 "insert into CUP values('2016-11-06 20:51:00','2016-11-06 22:39:00',300,360,0,-1);",
                 "insert into CUP values('2016-11-09 22:32:00','2016-11-10 01:36:00',650,0,0,1);",
-                "insert into CUP values('2016-11-12 20:30:00','2016-11-12 23:13:00',420,640,0,-1);",
-                "insert into CUP values('2016-11-14 23:30:00','2016-11-15 02:17:00',450,620,0,-1);"
         };
 
         String[] query_soju = new String[]{"insert into SOJU values('2016-07-01 20:33:00',1,3,0,0,0);",
@@ -995,8 +1109,6 @@ public class SCSDBManager extends SQLiteOpenHelper {
                 "insert into SOJU values('2016-11-04 22:30:00',0,1,0,0,0);",
                 "insert into SOJU values('2016-11-06 20:51:00',0,1,0,0,0);",
                 "insert into SOJU values('2016-11-09 22:32:00',0,0,0,0,1);",
-                "insert into SOJU values('2016-11-12 20:30:00',0,1,0,0,0);",
-                "insert into SOJU values('2016-11-14 23:30:00',0,1,0,0,0);"
         };
 
         String[] query_beer= new String[]{
@@ -1033,5 +1145,8 @@ public class SCSDBManager extends SQLiteOpenHelper {
             db.execSQL(query_makg[i]);
         }
     }
+
+
+
 
 }

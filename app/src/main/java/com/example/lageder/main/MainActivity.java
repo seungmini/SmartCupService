@@ -84,7 +84,6 @@ public class MainActivity  extends AppCompatActivity{
     private final String LIST_NAME = "NAME";
     private final String LIST_UUID = "UUID";
 
-    private ImageView drink_imageview;
     private int total_al_value;
     private String al_kind;
 
@@ -126,15 +125,7 @@ public class MainActivity  extends AppCompatActivity{
         Typeface font_gabia = Typeface.createFromAsset(this.getAssets(), "gabia_solmee.ttf");
         title_textview.setTypeface(font_gabia);
 
-        drink_imageview = (ImageView)findViewById(R.id.drink_image);
-        drink_imageview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent drink_popup_intent = new Intent(getApplicationContext(), DrinkPopupActivity.class);
-                drink_popup_intent.putExtra("name",name);
-                startActivity(drink_popup_intent);
-            }
-        });
+
 
         //기본 툴바, 레이아웃, 뷰페이저 설정
         //toolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -147,7 +138,7 @@ public class MainActivity  extends AppCompatActivity{
         //setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        String db_path = getDatabasePath("s1.db").getAbsolutePath();
+        String db_path = getDatabasePath("s2.db").getAbsolutePath();
         File db = new File(db_path);
         if(db.exists() != true){
             SCSDBManager db_manager = new SCSDBManager(this, "s2.db", null, 1);
@@ -159,10 +150,12 @@ public class MainActivity  extends AppCompatActivity{
         final TabLayout.Tab profile_tab = tabLayout.newTab();
         final TabLayout.Tab graph_tab = tabLayout.newTab();
         final TabLayout.Tab setting_tab = tabLayout.newTab();
+        final TabLayout.Tab service_tab = tabLayout.newTab();
 
         addTap(profile_tab,R.drawable.profile_32,"프로필", 0);
         addTap(graph_tab,R.drawable.graph_32,"최근 경향", 1);
-        addTap(setting_tab,R.drawable.settings_32,"환경설정", 2);
+        addTap(service_tab,R.drawable.service_32,"서비스",2);
+        addTap(setting_tab,R.drawable.settings_32,"설정", 3);
 
 
         tabLayout.setTabTextColors(Color.rgb(255,255,255),Color.rgb(255,255,255));

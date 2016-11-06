@@ -3,9 +3,11 @@ package com.example.lageder.main;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
 import tabview.GraphFragment;
 import tabview.ProfileFragment;
+import tabview.ServiceFragment;
 import tabview.StatusFragment;
 
 /**
@@ -21,6 +23,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        Log.e("??"," position = " + position);
         if (position == 0) {
             return new ProfileFragment();
         }
@@ -28,6 +31,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
             return new GraphFragment();
         }
         else if(position == 2){
+            return new ServiceFragment();
+        }
+        else if(position == 3){
             return new StatusFragment();
         }
         return null;
@@ -36,6 +42,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 }

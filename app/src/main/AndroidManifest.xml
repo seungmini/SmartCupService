@@ -46,7 +46,9 @@
         <activity android:name="tabview.FeedBackActivity" />
         <activity android:name="kakaolinkage.KakaoLoginActivity" />
         <activity android:name="bluetoothLe.DevicePopupActivity" />
-        <activity android:name="tabview.PhonePopupActivity"/>
+        <activity
+            android:name="tabview.PhonePopupActivity"
+            android:theme="@android:style/Theme.Dialog" />
 
         <service
             android:name=".BluetoothLeService"
@@ -59,7 +61,9 @@
         <service
             android:name=".MyService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity android:name="tabview.ServiceFragment"></activity>
     </application>
 
 </manifest>

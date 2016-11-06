@@ -72,6 +72,7 @@ public class GraphPopupActivity extends Activity {
         BarData data = new BarData(getXLabel_week(), db.getDataSet_beforeweek(chart_number));
         data.setValueFormatter(new YValueFormatter());
         data.setValueTypeface(font_gabia);
+        data.setValueTextSize(17);
         chart_popup.setData(data);
 
         //시작값 0 설정
