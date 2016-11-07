@@ -20,5 +20,7 @@
     <string name="unknown_characteristic">Unknown characteristic</string>
     <string name="unknown_service">Unknown service</string>
 
+    <string name="agree">알겠습니다.</string>
+    <string name="disagree">싫은데요?</string>
 
 </resources>

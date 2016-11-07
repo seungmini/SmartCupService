@@ -41,6 +41,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import bluetoothLe.SampleGattAttributes;
 import datas.SCSDBManager;
 import kakaolinkage.KakaoLoginActivity;
@@ -610,7 +612,19 @@ public class MainActivity  extends AppCompatActivity{
 
             String cityName = addresses.get(0).getAdminArea();
             if(cityName.compareTo("부산광역시") == 0) {
-                Toast.makeText(getApplicationContext(), cityName + "의 추천 술은 C1입니다.", Toast.LENGTH_LONG).show();
+                String msg = "";
+                msg += "여긴 " + cityName + "이네요!\n";
+                msg += "여기 사람들은 C1 소주와 Hite를 많이 먹는답니다!\n";
+                msg += "아, 물론 금정산성 막걸리도 맛있어요! 한번 먹어봐요!";
+                MaterialDialog.Builder builder = new MaterialDialog.Builder(MainActivity.this)
+                        .title("이 곳에서 먹을만한 술은?")
+                        .content(msg)
+                        .positiveText(R.string.agree)
+                        .negativeText(R.string.disagree);
+
+                MaterialDialog dialog = builder.build();
+                dialog.show();
+                //Toast.makeText(getApplicationContext(), cityName + "의 추천 술은 C1입니다.", Toast.LENGTH_LONG).show();
             }
             // \n is for new line
             //Toast.makeText(getApplicationContext(), "Your Location is - \n City name: " + cityName, Toast.LENGTH_LONG).show();

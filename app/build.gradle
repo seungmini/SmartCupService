@@ -27,6 +27,7 @@ dependencies {
     compile project(':HoloCircularProgressBar')
     compile files('libs/mpandroidchartlibrary-2-2-4.jar')
     compile 'com.mikhaellopez:circularimageview:3.0.2'
+    compile 'com.afollestad.material-dialogs:core:0.9.1.0'
 
     compile group: project.KAKAO_SDK_GROUP, name: 'kakaolink', version: project.KAKAO_SDK_VERSION
     compile group: project.KAKAO_SDK_GROUP, name: 'kakaotalk', version: project.KAKAO_SDK_VERSION

@@ -3,17 +3,39 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="스마트컵 연결 창"
+        android:textSize = "30dp"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        android:background="#4EBBD1"
+        android:id="@+id/phone_title"/>
+
     <ListView
         android:id="@android:id/list"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </ListView>
 
-    <Button
-        android:layout_width = "wrap_content"
-        android:layout_height = "wrap_content"
-        android:text = "cancel"
-        android:id="@+id/cancel_btn">
-    </Button>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="bottom">
+
+        <Button
+            android:layout_width = "match_parent"
+            android:layout_height = "wrap_content"
+            android:text = "cancel"
+            android:background="#4EBBD1"
+            android:textSize="20dp"
+            android:textColor="#FFFFFF"
+            android:layout_weight="1"
+            android:id="@+id/cancel_btn">
+        </Button>
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -12,10 +12,12 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -37,6 +39,7 @@ public class DevicePopupActivity extends ListActivity {
     private final static String TAG = BluetoothLeService.class.getSimpleName();
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2;
 
+    private Display display;
     private BLEAdapter mLeDeviceListAdapter;
     private BluetoothAdapter mBluetoothAdapter;
     private boolean mScanning = false;
@@ -56,6 +59,10 @@ public class DevicePopupActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        layoutParams.dimAmount = 0.7f;
+        getWindow().setAttributes(layoutParams);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.popup_device);
 
@@ -111,6 +118,12 @@ public class DevicePopupActivity extends ListActivity {
             }
         });
 
+        display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        int width = (int) (display.getWidth() * 0.8);
+        int height = (int) (display.getHeight() * 0.5);
+        getWindow().getAttributes().width = width;
+        getWindow().getAttributes().height = height;
+
 
 /*        scan_button = (Button) findViewById(R.id.scan_btn);
         scan_button.setOnClickListener(new View.OnClickListener() {
@@ -137,6 +150,19 @@ public class DevicePopupActivity extends ListActivity {
         });*/
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = getIntent();
+        intent.putExtra(MainActivity.EXTRAS_DEVICE_NAME, "aaa");
+        intent.putExtra(MainActivity.EXTRAS_DEVICE_ADDRESS, "bbb");
+        if (mScanning) {
+            mBluetoothAdapter.stopLeScan(mLeScanCallback);
+            mScanning = false;
+        }
+        setResult(RESULT_CANCELED,intent);
+        finish();
     }
 
     @Override
