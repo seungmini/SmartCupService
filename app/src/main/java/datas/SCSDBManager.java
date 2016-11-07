@@ -90,6 +90,12 @@ public class SCSDBManager extends SQLiteOpenHelper {
                 "CREATE TABLE IF NOT EXISTS PHONE (" +
                 "phone_num varchar(20) NOT NULL UNIQUE, " +
                 "user_name varchar(20) NOT NULL);");
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS POSITION (" +
+                "lat varchar(30) UNIQUE NOT NULL," +
+                "lng varchar(30) UNIQUE NOT NULL," +
+                "isCheck integer DEFAULT 0);");
+
     }
     // IF NOT EXISTS
 
@@ -266,7 +272,7 @@ public class SCSDBManager extends SQLiteOpenHelper {
 
         if(record_distance <= 5 || max- min >= dc_distance){// 자료 부족
             Cursor cs_dc;
-            String query_dc = "SELECT user_dc FROM DC";
+            String query_dc = "SELECT user_dc FROM DC order by user_dc desc limit 1";
             cs_dc = db.rawQuery(query_dc,null);
             calculated_dc = cs.getInt(0);
         }
@@ -1020,13 +1026,13 @@ public class SCSDBManager extends SQLiteOpenHelper {
         }
         if(flag_alchol == 1 && flag_hangover == -1){
             result = "최근 데이터를 보니 의사들의 권장량 보다는 적게 마시고 계십니다만" +
-                    "본인의 주량보다는 더 많은 량을 드시고 계십니다." +
-                    "한번에 조금씩만 덜 마시는건 어떨까요?";
+                    " 본인의 주량보다는 더 많은 량을 드시고 계십니다.\n" +
+                    "한번에 조금씩만 덜 마시는건 어떨까요? :)";
         }
         if(flag_alchol == -1 && flag_hangover == 1){
             result = "본인의 주량을 넘지 않는 선에서 적절히 마시고 계십니다.\n" +
-                    "하지만 의사분들이 권장하시는 것보다 많은 량을 드시고 계신것 같습니다.\n" +
-                    "술자리를 조금 줄여 보시는 건 어떨까요?";
+                    "하지만 의사분들이 권장하는 량보다는 더 많이 드시고 계십니다.\n" +
+                    "술자리를 횟수를 줄여 보시는 건 어떨까요? :)";
         }
         if(flag_alchol == -1 && flag_hangover == -1){
             result = "자주 마시지도 않고 마실때도 자신의 주량을 넘지 않으 시는군요!\n" +
@@ -1034,6 +1040,45 @@ public class SCSDBManager extends SQLiteOpenHelper {
         }
 
         return result;
+    }
+
+    public ArrayList<doublePair> getLocation() {
+        ArrayList<doublePair> arr = new ArrayList<doublePair>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cs;
+        String query_location = "select lat,lng from POSITION where isCheck = 0;";
+        cs=db.rawQuery(query_location, null);
+
+        while(cs.moveToNext()) {
+            doublePair temp = new doublePair(35.0,129.0);
+            temp.setA(Double.parseDouble(cs.getString(0)));
+            temp.setB(Double.parseDouble(cs.getString(1)));
+            arr.add(temp);
+        }
+        return arr;
+    }
+
+    public int existFeedBack(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cs;
+        String query_latest = "select s_time from CUP  order by s_time desc  limit 1";
+        //최근 5개의 데이터에서 숙취 유무 체크
+        cs = db.rawQuery(query_latest, null);
+        cs.moveToFirst();
+        String s_time = cs.getString(0);
+
+        String query_soju = "select s_time from SOJU where s_time == '"+s_time+"' ";
+        String query_beer = "select s_time from BEER where s_time == '"+s_time+"' ";
+        String query_makg = "select s_time from MAKG where s_time == '"+s_time+"' ";
+        Cursor cs_soju, cs_beer, cs_makg;
+        cs_soju = db.rawQuery(query_soju, null);
+        cs_beer = db.rawQuery(query_beer, null);
+        cs_makg = db.rawQuery(query_makg, null);
+
+        if(cs_soju.getCount() + cs_beer.getCount() +cs_makg.getCount() == 0){
+            return -1;
+        }
+        return 1;
     }
 
     public void setData(){
@@ -1074,8 +1119,8 @@ public class SCSDBManager extends SQLiteOpenHelper {
                 "insert into CUP values('2016-10-27 21:37:00','2016-10-27 23:21:00',0,0,980,-1);",
                 "insert into CUP values('2016-10-29 20:18:00','2016-10-31 00:56:00',410,0,0,-1);",
                 "insert into CUP values('2016-11-04 22:30:00','2016-11-05 00:27:00',370,0,0,-1);",
-                "insert into CUP values('2016-11-06 20:51:00','2016-11-06 22:39:00',300,360,0,-1);",
-                "insert into CUP values('2016-11-09 22:32:00','2016-11-10 01:36:00',650,0,0,1);",
+                "insert into CUP values('2016-11-06 20:51:00','2016-11-06 22:39:00',300,360,0,-1);"
+
         };
 
         String[] query_soju = new String[]{"insert into SOJU values('2016-07-01 20:33:00',1,3,0,0,0);",
@@ -1108,7 +1153,6 @@ public class SCSDBManager extends SQLiteOpenHelper {
                 "insert into SOJU values('2016-09-29 20:18:00',0,1,0,0,0);",
                 "insert into SOJU values('2016-11-04 22:30:00',0,1,0,0,0);",
                 "insert into SOJU values('2016-11-06 20:51:00',0,1,0,0,0);",
-                "insert into SOJU values('2016-11-09 22:32:00',0,0,0,0,1);",
         };
 
         String[] query_beer= new String[]{

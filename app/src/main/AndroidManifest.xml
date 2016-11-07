@@ -12,6 +12,13 @@
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality. 
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:name="kakaolinkage.GlobalApplication"
         android:allowBackup="true"
@@ -45,7 +52,10 @@
             android:theme="@android:style/Theme.Dialog" />
         <activity android:name="tabview.FeedBackActivity" />
         <activity android:name="kakaolinkage.KakaoLoginActivity" />
-        <activity android:name="bluetoothLe.DevicePopupActivity" />
+        <activity android:name=".MapsActivity" />
+        <activity
+            android:name="bluetoothLe.DevicePopupActivity"
+            android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name="tabview.PhonePopupActivity"
             android:theme="@android:style/Theme.Dialog" />
@@ -63,7 +73,18 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name="tabview.ServiceFragment"></activity>
+        <activity android:name="tabview.ServiceFragment" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
     </application>
 
 </manifest>

@@ -55,7 +55,7 @@ public class PhonePopupActivity extends Activity {
         listview = (ListView) findViewById(R.id.number_list);
         listview.setAdapter(adapter);
 
-        SCSDBManager db = new SCSDBManager(getApplicationContext(), "s2.db", null, 1);
+        SCSDBManager db = new SCSDBManager(getApplicationContext(), "abc12345.db", null, 1);
         item_list = db.getPhone();
 
         for(ListViewItem item : item_list)
@@ -91,6 +91,14 @@ public class PhonePopupActivity extends Activity {
         });
 
         btn_ok = (Button)findViewById(R.id.btn_ok);
+
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         textview_title = (TextView)findViewById(R.id.phone_title);
         textview_name = (TextView)findViewById(R.id.phone_name);
         textview_num = (TextView)findViewById(R.id.phone_num);
@@ -128,7 +136,7 @@ public class PhonePopupActivity extends Activity {
                     return;
             }
 
-            SCSDBManager db = new SCSDBManager(getApplicationContext(), "s2.db", null, 1);
+            SCSDBManager db = new SCSDBManager(getApplicationContext(), "abc12345.db", null, 1);
             String query_add = "INSERT INTO PHONE VALUES (\"" + receivePhone + "\",\"" + receiveName + "\");";
             db.executeQuery(query_add);
 

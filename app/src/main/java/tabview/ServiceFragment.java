@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.lageder.main.MapsActivity;
 import com.example.lageder.main.R;
 
 import java.io.File;
@@ -20,9 +21,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import com.example.lageder.main.MainActivity;
 
+import org.w3c.dom.Text;
+
 public class ServiceFragment extends Fragment {
-    private ImageView drink_imageview,recommend_imageview;
-    private TextView textview_recommend, textview_realtime;
+    private ImageView drink_imageview,recommend_imageview,tracker_imageview;
+    private TextView textview_recommend, textview_realtime,textview_tracker;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -59,9 +62,17 @@ public class ServiceFragment extends Fragment {
         recommend_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String location = "";
                 MainActivity myActivity = (MainActivity) getActivity();
                 myActivity.checkPermission();
+            }
+        });
+        tracker_imageview = (ImageView) v.findViewById(R.id.gps_tracker);
+        tracker_imageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity myActivity = (MainActivity) getActivity();
+                Intent intent = new Intent(myActivity, MapsActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -69,8 +80,10 @@ public class ServiceFragment extends Fragment {
 
         textview_recommend = (TextView)v.findViewById(R.id.recommend);
         textview_realtime = (TextView)v.findViewById(R.id.real_time);
+        textview_tracker = (TextView)v.findViewById(R.id.tracker);
         textview_realtime.setTypeface(font_gabia);
         textview_recommend.setTypeface(font_gabia);
+        textview_tracker.setTypeface(font_gabia);
 
         return v;
     }

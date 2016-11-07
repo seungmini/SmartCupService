@@ -49,7 +49,7 @@ public class GraphFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_graph, container, false);
-        final SCSDBManager db = new SCSDBManager(getActivity(), "s2.db", null, 1);
+        final SCSDBManager db = new SCSDBManager(getActivity(), "abc12345.db", null, 1);
 
         activity = getActivity();
 
@@ -122,7 +122,7 @@ public class GraphFragment extends Fragment {
     }
 
     public void makeWeekGraph(){
-        SCSDBManager db = new SCSDBManager(getActivity(), "s2.db", null, 1);
+        SCSDBManager db = new SCSDBManager(getActivity(), "abc12345.db", null, 1);
 
         BarData data = new BarData(getXLabel_week(), db.getDataSet_thisweek());
         data.setValueFormatter(new YValueFormatter());
@@ -154,7 +154,7 @@ public class GraphFragment extends Fragment {
     }
     public void makeMonthGraph(){
 
-        SCSDBManager db = new SCSDBManager(getActivity(), "s2.db", null, 1);
+        SCSDBManager db = new SCSDBManager(getActivity(), "abc12345.db", null, 1);
         Typeface font_gabia = Typeface.createFromAsset(getActivity().getAssets(), "gabia_solmee.ttf");
 
         BarData data = new BarData(getXLabel_month(), db.getDataSet_month());

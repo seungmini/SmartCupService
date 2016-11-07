@@ -26,6 +26,24 @@
             android:layout_marginRight="15dp"
              />
 
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#FFAE00"
+            android:textColor="#FFFFFF"
+            android:text="자동 문자"
+            android:id="@+id/automessage_switch"
+            android:textSize="25dp"
+            android:drawableLeft="@drawable/mail_32"
+
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:drawablePadding="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            />
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="60dp"

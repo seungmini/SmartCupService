@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,12 +59,12 @@ public class NumberAdapter extends BaseAdapter {
         user_name.setText(listViewItem.getUser_name());
 
         final String text = listViewItemList.get(position).getPhone_num();
-        ImageButton btn_delete = (ImageButton) convertView.findViewById(R.id.btn_delete);
+        ImageView btn_delete = (ImageView) convertView.findViewById(R.id.btn_delete);
 
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SCSDBManager db = new SCSDBManager(context, "s2.db", null, 1);
+                SCSDBManager db = new SCSDBManager(context, "abc12345.db", null, 1);
                 String query_delete = "DELETE FROM PHONE WHERE phone_num=\""+listViewItemList.get(pos).getPhone_num() + "\" and user_name=\""+listViewItemList.get(pos).getUser_name()+"\"";
                 db.executeQuery(query_delete);
                 deleteItem(listViewItemList.get(pos).getPhone_num(),listViewItemList.get(pos).getUser_name());

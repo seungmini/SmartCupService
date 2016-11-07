@@ -148,8 +148,6 @@ public class DevicePopupActivity extends ListActivity {
 
             }
         });*/
-
-
     }
 
     @Override
@@ -189,6 +187,8 @@ public class DevicePopupActivity extends ListActivity {
             // permissions this app might request
         }
     }
+
+
 
     @Override
     protected void onResume() {

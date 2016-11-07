@@ -13,6 +13,7 @@ import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.SmsManager;
 import android.widget.Toast;
@@ -38,16 +39,22 @@ public class MyService extends Service {
 
     @Override
     public void onDestroy() {
-        thread.interrupt();
         super.onDestroy();
+//        thread.stopForever();
+        if(thread != null)
+            thread.interrupt();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Notifi_M = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         myServiceHandler handler = new myServiceHandler();
-        db = new SCSDBManager(getApplicationContext(), "s2.db", null, 1);
-        thread = new AlcoholThread(db, handler);
+        myNotiHandler notiHandler = new myNotiHandler();
+
+        boolean isSend = Boolean.parseBoolean(intent.getStringExtra("isSend"));
+
+        db = new SCSDBManager(getApplicationContext(), "abc12345.db", null, 1);
+        thread = new AlcoholThread(gps, db, handler, notiHandler, isSend);
         thread.start();
         return START_STICKY;
     }
@@ -76,6 +83,16 @@ public class MyService extends Service {
     class myServiceHandler extends Handler {
         @Override
         public void handleMessage(android.os.Message msg) {
+            ArrayList<ListViewItem> item_list = db.getPhone();
+
+            for(ListViewItem item : item_list)
+                mCallback.sendSMS(item.getPhone_num(),"사용자분이 술에 취한 상태입니다. 귀가여부에 신경써주십시오.");
+        }
+    };
+
+    class myNotiHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
             Intent intent = new Intent(MyService.this, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(MyService.this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -96,14 +113,7 @@ public class MyService extends Service {
             //확인하면 자동으로 알림이 제거 되도록
             Notifi.flags = Notification.FLAG_AUTO_CANCEL;
 
-
             Notifi_M.notify( 777 , Notifi);
-
-            ArrayList<ListViewItem> item_list = db.getPhone();
-
-
-            for(ListViewItem item : item_list)
-                mCallback.sendSMS(item.getPhone_num(),"사용자분이 술에 취한 상태입니다. 귀가여부에 신경써주십시오.");
         }
-    };
+    }
 }

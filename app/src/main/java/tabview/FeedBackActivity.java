@@ -202,7 +202,7 @@ public class FeedBackActivity extends Activity {
     }
 
     public void clickOk(){
-        SCSDBManager sj_manager = new SCSDBManager(getApplicationContext(), "s2.db", null, 1);
+        SCSDBManager sj_manager = new SCSDBManager(getApplicationContext(), "abc12345.db", null, 1);
         String latest_time = sj_manager.getLatestTime();
 
         int soju_c1 = 0, soju_gd = 0, soju_sh = 0, soju_lf = 0, soju_hl = 0;

@@ -1,0 +1,21 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=29:96:4F:5A:25:EB:34:26:D9:9D:5E:4F:FA:AF:7D:DA:00:E2:9C:E0%3Bcom.example.lageder.main
+
+    You can also add your credentials to an existing key, using this line:
+    29:96:4F:5A:25:EB:34:26:D9:9D:5E:4F:FA:AF:7D:DA:00:E2:9C:E0;com.example.lageder.main
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+        AIzaSyADXQ7rNY7-EuOzm0g1YEIM3F36a1jOnKc
+    </string>
+</resources>

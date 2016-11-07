@@ -12,20 +12,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp">
+        android:layout_marginLeft="10dp">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_weight="1">
             <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="115dp"
+                android:layout_height="115dp"
                 android:src="@drawable/drink_service"
                 android:clickable="true"
                 android:id="@+id/drink_image" />
             <TextView
-                android:layout_width="120dp"
+                android:layout_width="115dp"
                 android:layout_height="wrap_content"
                 android:textSize="17dp"
                 android:gravity="center"
@@ -38,23 +38,24 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layout_marginLeft="-5dp"
             android:layout_weight="1">
             <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="115dp"
+                android:layout_height="115dp"
                 android:src="@drawable/gps"
                 android:clickable="true"
                 android:id="@+id/imageButton"
                 />
             <TextView
-                android:layout_width="120dp"
+                android:layout_width="115dp"
                 android:layout_height="wrap_content"
                 android:textSize="17dp"
                 android:gravity="center"
                 android:textColor="#111111"
                 android:id="@+id/recommend"
                 android:paddingTop="8dp"
-                android:text="GPS 기반 술 추천"/>
+                android:text="지역별 추천 술"/>
 
         </LinearLayout>
         <LinearLayout
@@ -63,16 +64,20 @@
             android:orientation="vertical"
             android:layout_weight="1">
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:id="@+id/imageButton1"
+                android:layout_width="115dp"
+                android:layout_height="115dp"
+                android:id="@+id/gps_tracker"
+                android:src="@drawable/map_tracker"
                 />
             <TextView
-                android:layout_width="100dp"
+                android:layout_width="115dp"
                 android:layout_height="wrap_content"
                 android:textSize="17dp"
                 android:gravity="center"
-                android:textColor="#000000"/>
+                android:textColor="#111111"
+                android:id="@+id/tracker"
+                android:paddingTop="8dp"
+                android:text="어제 어디갔었지?"/>
         </LinearLayout>
 
     </LinearLayout>

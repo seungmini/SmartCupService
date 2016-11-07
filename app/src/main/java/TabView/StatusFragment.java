@@ -33,6 +33,7 @@ import datas.SCSDBManager;
 public class StatusFragment extends Fragment {
     Activity activity;
     private Switch switch_bluetooth;
+    private Switch switch_sms;
     private Button gps_btn;
     private Button button_phone_num;
 
@@ -63,6 +64,16 @@ public class StatusFragment extends Fragment {
             }
         });
 
+        switch_sms = (Switch)v.findViewById(R.id.automessage_switch);
+        switch_sms.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                MainActivity activity = (MainActivity) getActivity();
+                if(!activity.getisSend()) activity.setisSend(true);
+                else activity.setisSend(false);
+            }
+        });
+
         button_phone_num = (Button)v.findViewById(R.id.phone_btn);
         button_phone_num.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +95,7 @@ public class StatusFragment extends Fragment {
         Typeface font_gabia = Typeface.createFromAsset(getActivity().getAssets(), "gabia_solmee.ttf");
         switch_bluetooth.setTypeface(font_gabia);
         button_phone_num.setTypeface(font_gabia);
-
+        switch_sms.setTypeface(font_gabia);
         return v;
     }
 

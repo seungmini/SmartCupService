@@ -2,6 +2,9 @@ package datas;
 
 
 import android.os.Handler;
+import android.util.Log;
+
+import com.example.lageder.main.GPSTracker;
 
 /**
  * Created by Lageder on 2016-11-01.
@@ -9,18 +12,24 @@ import android.os.Handler;
 
 public class AlcoholThread extends Thread {
     SCSDBManager db;
+    GPSTracker gps;
     Handler handler;
-    boolean isRun = true, isOver = false;
+    Handler notiHandler;
+    boolean isRun = true, isOver = false, isSend = false;
     int cur_alcohol, limit;
 
-    public AlcoholThread(SCSDBManager target, Handler handler) {
+    public AlcoholThread(GPSTracker gps, SCSDBManager target, Handler handler, Handler notiHandler, boolean isSend) {
         this.handler = handler;
         this.db = target;
+        this.notiHandler = notiHandler;
+        this.gps = gps;
+        this.isSend = isSend;
     }
 
     public void stopForever() {
         synchronized (this) {
             this.isRun = false;
+            this.isOver = false;
         }
     }
 
@@ -34,12 +43,33 @@ public class AlcoholThread extends Thread {
                 double per = cur_alcohol / limit;
                 if(per >= 80.0) {
                     isOver = true;
-                    handler.sendEmptyMessage(0);
+
+                    if(isSend)
+                        handler.sendEmptyMessage(0);
+
+                    notiHandler.sendEmptyMessage(0);
                     break;
                 }
-                Thread.sleep(60000);
+                Thread.sleep(600000);
             }catch(Exception e) {}
         }
-        while(isOver) {;}
+        while(isOver) {
+            try {
+                if(gps.canGetLocation()) {
+                    Log.e("ABCDEFG","I got gps!");
+                    double latitude = gps.getLatitude();
+                    double longitude = gps.getLongitude();
+
+                    Log.e("ABCDEFG","lat = " + latitude + " and lng = " + longitude);
+                    gps.stopUsingGPS();
+                    String query = "insert into POSITION values(" + latitude + "," + longitude + "," + 0 + ");";
+                    db.executeQuery(query);
+                }
+                Thread.sleep(600000);
+
+            } catch(Exception e) {
+
+            }
+        }
     }
 }
